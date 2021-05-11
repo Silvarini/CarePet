@@ -18,7 +18,7 @@ The pet will interact when the user is petting him and depending on a communicat
   
 ## Key Features
 
-- [ ]  Interaction with a virtual avatar 
+- [X]  Interaction with a virtual avatar 
 - [ ]  Daily dialogue supported by a communication protocol  
 - [ ]  Medication Reminder  
 - [ ]  Personal Task's Reminder  
