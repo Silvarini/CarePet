@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/destination_main">
+
+    <fragment
+        android:id="@+id/destination_medication"
+        android:name="com.example.carepet.medication.MedicationFragment"
+        android:label="fragment_medication_list"
+        tools:layout="@layout/fragment_medication_list" >
+        <action
+            android:id="@+id/action_medication_to_mainActivity"
+            app:destination="@id/destination_main" />
+    </fragment>
+    <dialog
+        android:id="@+id/destination_dialogue"
+        android:name="com.example.carepet.dialog.DialogMedicationFragment"
+        android:label="fragment_dialog"
+        tools:layout="@layout/fragment_medication_dialog"/>
+    <fragment
+        android:id="@+id/destination_main"
+        android:name="com.example.carepet.MainFragment"
+        android:label="MainActivity"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainActivity_to_medication"
+            app:destination="@id/destination_medication" />
+        <action
+            android:id="@+id/action_destination_main_to_destination_dialogue"
+            app:destination="@id/destination_dialogue" />
+        <action
+            android:id="@+id/action_destination_main_to_dialogPetFragment"
+            app:destination="@id/dialogPetFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/dialogPetFragment"
+        android:name="com.example.carepet.dialog.DialogPetFragment"
+        android:label="DialogPetFragment" />
+
+</navigation>
