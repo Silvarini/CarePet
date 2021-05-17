@@ -1,4 +1,4 @@
-package com.example.carepet.view.activities
+package com.example.carepet
 
 import android.content.Intent
 import android.os.Build
@@ -12,7 +12,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import com.example.carepet.R
 import com.example.carepet.databinding.ActivitySplashBinding
-import com.example.carepet.view.activities.MainActivity
+import com.example.carepet.MainActivity
 
 private lateinit var binding: ActivitySplashBinding
 

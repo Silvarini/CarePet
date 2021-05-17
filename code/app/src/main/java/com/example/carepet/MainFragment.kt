@@ -1,85 +1,97 @@
-package com.example.carepet.view.activities
+package com.example.carepet
 
-
+import android.annotation.SuppressLint
 import android.net.Uri
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import com.example.carepet.R
-import com.example.carepet.databinding.ActivityMainBinding
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.example.carepet.databinding.FragmentMainBinding
+import com.example.carepet.user.UserViewModel
+import kotlinx.coroutines.delay
 
-private lateinit var binding: ActivityMainBinding
+class MainFragment : Fragment() {
 
-class MainActivity : AppCompatActivity() {
-
-    var pDownX=0
-    var pDownY=0
-    var pUpX=0
-    var pUpY=0
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+    private var _binding: FragmentMainBinding? = null
+    private val binding get() = _binding!!
 
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        // Inflate the layout for this fragment
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            @Suppress("DEPRECATION")
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
+        binding.buttonMedication.setOnClickListener{
+            it.findNavController().navigate(MainFragmentDirections.actionMainActivityToMedication())
         }
 
 
+        return binding.root
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onStart() {
+        super.onStart()
 
         val videoViewPet = binding.videoViewPet
 
+        var count = 0
+
+        //Pet Animations
+        val animationEndPet = Uri.parse("android.resource://${activity?.packageName}/${R.raw.pet_end}")
+        val animationReceivingPet = Uri.parse("android.resource://${activity?.packageName}/${R.raw.pet_receiving}")
+        val animationInitPet = Uri.parse("android.resource://${activity?.packageName}/${R.raw.pet_init}")
+        val animationAskPet = Uri.parse("android.resource://${activity?.packageName}/${R.raw.ask_pet}")
+        val animationIdle = Uri.parse("android.resource://${activity?.packageName}/${R.raw.idle}")
+        val animationGreetings = Uri.parse("android.resource://${activity?.packageName}/${R.raw.greetings}")
 
         fun playAnimation(animation: Uri?) {
             videoViewPet.setVideoURI(animation)
             videoViewPet.start()
         }
 
-        fun playendPet(){
-            val animationEndPet = Uri.parse("android.resource://$packageName/${R.raw.pet_end}")
+        fun playEndPet(){
             playAnimation(animationEndPet)
+            findNavController().navigate(MainFragmentDirections.actionDestinationMainToDialogPetFragment())
+
+
         }
 
         fun playReceivingPet(){
-            val animationReceivingPet = Uri.parse("android.resource://$packageName/${R.raw.pet_receiving}")
             playAnimation(animationReceivingPet)
         }
 
         fun playInitPet() {
-            val animationInitPet = Uri.parse("android.resource://$packageName/${R.raw.pet_init}")
             playAnimation(animationInitPet)
         }
 
         fun playAskPet(){
-            val animationAskPet = Uri.parse("android.resource://$packageName/${R.raw.ask_pet}")
             playAnimation(animationAskPet)
         }
 
-        var count = 0
         fun playIdle() {
-            val animationIdle = Uri.parse("android.resource://$packageName/${R.raw.idle}")
             playAnimation(animationIdle)
             ++count
             if(count%5 == 0){
                 playAskPet()
             }
-            Log.d("COUNT", count.toString());
+            Log.d("COUNT", count.toString())
         }
+
 
 
         fun setOnTouchListener() {
@@ -107,7 +119,7 @@ class MainActivity : AppCompatActivity() {
                             playReceivingPet()
                         }
                     }else if(actString=="petEND"){
-                        playendPet()
+                        playEndPet()
                         videoViewPet.setOnCompletionListener {
                             actString=""
                             playIdle()
@@ -126,14 +138,16 @@ class MainActivity : AppCompatActivity() {
 
 
         fun playGreetings() {
-            val animationGreetings = Uri.parse("android.resource://$packageName/${R.raw.greetings}")
             playAnimation(animationGreetings)
             videoViewPet.setOnCompletionListener {
                 playIdle()
             }
         }
 
-    playGreetings()
+        playGreetings()
+
+
+
 
     }
 
@@ -141,4 +155,13 @@ class MainActivity : AppCompatActivity() {
 
 
 }
+
+
+
+
+
+
+
+
+
 

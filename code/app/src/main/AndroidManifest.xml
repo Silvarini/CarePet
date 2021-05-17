@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CarePet">
-        <activity android:name=".view.activities.SplashActivity"
+        <activity android:name=".SplashActivity"
             android:theme="@style/Theme.CarePet.NoActionBar"
             android:configChanges="orientation"
             >
@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activities.MainActivity"
+            android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:configChanges="orientation"
             >
