@@ -1,5 +1,6 @@
 package com.example.carepet.model
 
+import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
@@ -7,14 +8,15 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "user",
-    indices = [Index("user_username")]
+    indices = [Index("user_id")]
 )
 
 data class User(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
     @ColumnInfo
-    (name = "user_username")
-    val userUsername: String,
+    (name = "user_id")
+    val userId: Int,
 
     @ColumnInfo(name = "user_name")
     val name: String,

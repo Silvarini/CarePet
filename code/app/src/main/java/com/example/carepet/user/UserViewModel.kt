@@ -1,44 +1,61 @@
 package com.example.carepet.user
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
 import com.example.carepet.enum.AffectionLevelEnum
+import com.example.carepet.enum.AffectionLevelEnum.*
 import com.example.carepet.model.User
-import com.example.carepet.storage.UserDao
-import com.example.carepet.storage.UserDatabase
+import kotlinx.coroutines.launch
 
 
-class UserViewModel(application: Application): AndroidViewModel(application) {
-    var message = ""
+class UserViewModel(
+        private val repository: UserRepository
+): ViewModel() {
 
-    private val getAllUserData: LiveData<List<User>>
-    private val repository: UserRepository
-
-    init {
-        val userDao = UserDatabase.getDatabase(application).userDao()
-        repository = UserRepository(userDao)
-        getAllUserData = repository.getAllUserData
-    }
-    private var userLiveData: LiveData<User>? = null
-
-
-    fun addPettingScore() {
-        val addNumber = 10
-        pettingScore += addNumber
-        calculateAffectionLevel(pettingScore)
+    fun insertOrUpdateUser(user: User) = viewModelScope.launch {
+        repository.insertOrUpdateUser(user)
     }
 
-    fun calculateAffectionLevel(pettingScore: Int): AffectionLevelEnum {
-        var affectionLevel = 0
+    val getAllUserData: LiveData<List<User>> = repository.getAllUserData.asLiveData()
 
-        affectionLevel = pettingScore + taskScore
 
-        if (affectionLevel <= 20){ message = AffectionLevelEnum.ONE
-        }else if(affectionLevel in 21..50){ return AffectionLevelEnum.TWO
-        }else{ return AffectionLevelEnum.THREE }
+
+     fun calculateAffectionScore(petting_score : Int, task_score: Int): AffectionLevelEnum {
+        val affectionLevel = petting_score + task_score
+
+        if (affectionLevel <= 20){ return ONE
+        }else if(affectionLevel in 21..50){ return TWO
+        }else{ return THREE }
     }
+
+     fun choosePettingMessage(affectionLevel: AffectionLevelEnum): String{
+        var message = ""
+        message = when (affectionLevel){
+            ONE -> ONE.PETTING
+            TWO -> TWO.PETTING
+            THREE -> THREE.PETTING
+        }
+        return message
+    }
+
+    fun increasePettingScore(pettingScore: Int): Int {
+        return pettingScore + 10
+    }
+
+     fun savePettingScores(id: Int, name: String, pettingScore: Int, taskScore: Int){
+        val user: User = User(
+                id,
+                name,
+                pettingScore,
+                taskScore
+        )
+         insertOrUpdateUser(user)
+    }
+
+
 
 }
+
+
+
+

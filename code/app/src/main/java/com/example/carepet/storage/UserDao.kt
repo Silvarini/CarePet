@@ -3,15 +3,19 @@ package com.example.carepet.storage
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.carepet.model.User
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface   UserDao {
-    @Query("SELECT * FROM user")
-    suspend fun getAllUserData(): LiveData<List<User>>
+interface UserDao {
+    @Query("SELECT * FROM user ORDER BY user_Id ASC")
+    fun getAllUserData(): Flow<List<User>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrUpdateScores(user: User)
+    suspend fun insertOrUpdateUser(user: User)
 
-    @Query("DELETE * FROM user")
-    suspend fun deleteAll()
+
+
+
+    // @Delete
+   // suspend fun deleteAll(user: User)
 }

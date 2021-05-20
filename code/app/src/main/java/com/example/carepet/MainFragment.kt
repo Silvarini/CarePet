@@ -9,17 +9,25 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.carepet.databinding.FragmentMainBinding
+import com.example.carepet.model.User
+import com.example.carepet.user.UserApplication
 import com.example.carepet.user.UserViewModel
-import kotlinx.coroutines.delay
+import com.example.carepet.user.UserViewModelFactory
 
 class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
+
+
+    private val userViewModel: UserViewModel by viewModels {
+        UserViewModelFactory((requireActivity().application as UserApplication).repository)
+    }
 
 
     override fun onCreateView(
@@ -33,8 +41,14 @@ class MainFragment : Fragment() {
             it.findNavController().navigate(MainFragmentDirections.actionMainActivityToMedication())
         }
 
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+
     }
 
 
@@ -46,6 +60,7 @@ class MainFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onStart() {
         super.onStart()
+
 
         val videoViewPet = binding.videoViewPet
 
@@ -64,11 +79,24 @@ class MainFragment : Fragment() {
             videoViewPet.start()
         }
 
-        fun playEndPet(){
+        fun playEndPet() {
+            var id = 0
+            var name = ""
+            var pettingScore = 0
+            var taskScore = 0
             playAnimation(animationEndPet)
+            userViewModel.getAllUserData.observe(viewLifecycleOwner) { scores ->
+                scores.let {
+                    for (item in it) {
+                        id = item.userId
+                        name = item.name
+                        pettingScore = item.pettingScore
+                        taskScore = item.taskScore
+                    }
+                }
+            }
+            userViewModel.savePettingScores(id, name, userViewModel.increasePettingScore(pettingScore), taskScore)
             findNavController().navigate(MainFragmentDirections.actionDestinationMainToDialogPetFragment())
-
-
         }
 
         fun playReceivingPet(){
@@ -145,6 +173,16 @@ class MainFragment : Fragment() {
         }
 
         playGreetings()
+
+        val userName = "Carlos"
+        val user: User = User(
+                1,
+                userName,
+                0,
+                0
+        )
+        userViewModel.insertOrUpdateUser(user)
+
 
 
 

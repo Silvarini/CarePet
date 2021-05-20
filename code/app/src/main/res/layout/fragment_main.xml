@@ -58,24 +58,24 @@
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="44dp"
+        android:layout_marginBottom="52dp"
         android:background="@drawable/round_button"
         android:text="T"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.436"
-        app:layout_constraintStart_toEndOf="@+id/button_medication" />
+        app:layout_constraintEnd_toStartOf="@+id/button_medication"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_medication"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"
         android:layout_centerInParent="true"
-        android:layout_marginStart="100dp"
-        android:layout_marginBottom="44dp"
+        android:layout_marginEnd="92dp"
+        android:layout_marginBottom="52dp"
         android:background="@drawable/round_button"
         android:text="M"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
