@@ -14,10 +14,15 @@ import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.carepet.databinding.FragmentMainBinding
+import com.example.carepet.medication.MedicationViewModel
+import com.example.carepet.medication.MedicationViewModelFactory
+import com.example.carepet.model.Medication
 import com.example.carepet.model.User
+import com.example.carepet.model.Weekdays
 import com.example.carepet.user.UserApplication
 import com.example.carepet.user.UserViewModel
 import com.example.carepet.user.UserViewModelFactory
+import java.util.*
 
 class MainFragment : Fragment() {
 
@@ -29,6 +34,10 @@ class MainFragment : Fragment() {
         UserViewModelFactory((requireActivity().application as UserApplication).repository)
     }
 
+    private val medicationViewModel: MedicationViewModel by viewModels {
+        MedicationViewModelFactory((requireActivity().application as UserApplication).repository)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +47,11 @@ class MainFragment : Fragment() {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
 
         binding.buttonMedication.setOnClickListener{
-            it.findNavController().navigate(MainFragmentDirections.actionMainActivityToMedication())
+            it.findNavController().navigate(MainFragmentDirections.actionDestinationMainToMedicationListFragment())
+        }
+
+        binding.buttonHelp.setOnClickListener{
+            it.findNavController().navigate(MainFragmentDirections.actionDestinationMainToTaskCalendarFragment())
         }
 
         return binding.root
@@ -46,9 +59,6 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-
     }
 
 
@@ -183,8 +193,31 @@ class MainFragment : Fragment() {
         )
         userViewModel.insertOrUpdateUser(user)
 
+        val weekdays: Weekdays = Weekdays(
+                true,
+                true,
+                true,
+                true,
+                false,
+                false,
+                false
+        )
 
+        val date: Date = Date(1321321)
 
+        val medication: Medication = Medication(
+                1,
+                "Adderall",
+                "image",
+                date,
+                12312312,
+                weekdays,
+                3,
+                1,
+                1
+
+        )
+        medicationViewModel.insertOrUpdateMedication(medication)
 
 
     }

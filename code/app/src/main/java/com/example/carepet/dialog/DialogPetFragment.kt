@@ -1,7 +1,6 @@
 package com.example.carepet.dialog
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,7 +52,7 @@ class DialogPetFragment : DialogFragment(){
             scores ->
             scores.let {
                 for(item in it){
-                    var message = userViewModel.choosePettingMessage(userViewModel.calculateAffectionScore(item.pettingScore, item.taskScore))
+                    val message = userViewModel.choosePettingMessage(userViewModel.calculateAffectionScore(item.pettingScore, item.taskScore))
                     binding.textViewPetDialog.setText(message)
                 }
             }

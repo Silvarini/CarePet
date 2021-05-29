@@ -1,6 +1,5 @@
 package com.example.carepet.user
 
-import android.app.Application
 import androidx.lifecycle.*
 import com.example.carepet.enum.AffectionLevelEnum
 import com.example.carepet.enum.AffectionLevelEnum.*
