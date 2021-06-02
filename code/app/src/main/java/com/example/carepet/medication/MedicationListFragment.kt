@@ -8,14 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.carepet.databinding.FragmentMedicationListBinding
-import com.example.carepet.model.Medication
-import com.example.carepet.model.Weekdays
 import com.example.carepet.user.UserApplication
 import kotlinx.android.synthetic.main.fragment_medication_list.*
 import java.util.*
-import kotlin.math.log
 
 class MedicationListFragment: Fragment() {
 
@@ -24,30 +22,33 @@ class MedicationListFragment: Fragment() {
         MedicationViewModelFactory((requireActivity().application as UserApplication).repository)
     }
 
-    private lateinit var mBinding : FragmentMedicationListBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var _binding: FragmentMedicationListBinding? = null
+    private val binding get() = _binding!!
 
-    }
+
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        mBinding = FragmentMedicationListBinding.inflate(inflater, container, false)
-        return mBinding.root
+        _binding = FragmentMedicationListBinding.inflate(inflater, container, false)
+
+        binding.buttonNewMedication.setOnClickListener{
+            it.findNavController().navigate(MedicationListFragmentDirections.actionMedicationListFragmentToMedicationAddFragment())
+        }
+        return binding.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mBinding.rvMedicationList.layoutManager = LinearLayoutManager(requireActivity())
+        binding.rvMedicationList.layoutManager = LinearLayoutManager(requireActivity())
         val medicationAdapter = MedicationAdapter(this@MedicationListFragment)
 
-        mBinding.rvMedicationList.adapter = medicationAdapter
+        binding.rvMedicationList.adapter = medicationAdapter
 
 
 
@@ -58,10 +59,8 @@ class MedicationListFragment: Fragment() {
             medications ->
                 medications.let{
                     //if (it.isNotEmpty()){
-                        mBinding.rvMedicationList.visibility = View.VISIBLE
+                        binding.rvMedicationList.visibility = View.VISIBLE
                         // mBinding.something.visibility = View.GONE -> for when the list is empty make UI
-
-                        Log.i("BATMAN",it.toString())
                         medicationAdapter.medicationsList(it)
                    // }else{
                         //mBinding.rvMedicationList.visibility = View.GONE

@@ -1,6 +1,7 @@
 package com.example.carepet.model
 
 import androidx.room.*
+import com.example.carepet.enum.DurationTypes
 import java.util.*
 
 
@@ -11,9 +12,6 @@ data class Medication(
     (name = "medication_id")
     val medicationId: Int,
 
-    @ColumnInfo(name = "medication_name")
-    val medicationName: String,
-
     @ColumnInfo(name = "medication_photo")
     val medicationPhoto: String,
 
@@ -21,7 +19,7 @@ data class Medication(
     val medicationInitialDate: Date?,
 
     @ColumnInfo(name = "medication_duration")
-    val medicationDuration: Int,
+    val medicationDuration: String,
 
     @Embedded
     val medicationWeekdays: Weekdays,

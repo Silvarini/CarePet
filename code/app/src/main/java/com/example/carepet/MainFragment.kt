@@ -1,6 +1,9 @@
 package com.example.carepet
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.ContextWrapper
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -13,7 +16,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.example.carepet.common.Constants.IMAGE_DIRECTORY
 import com.example.carepet.databinding.FragmentMainBinding
+import com.example.carepet.enum.DurationTypes
 import com.example.carepet.medication.MedicationViewModel
 import com.example.carepet.medication.MedicationViewModelFactory
 import com.example.carepet.model.Medication
@@ -22,6 +27,10 @@ import com.example.carepet.model.Weekdays
 import com.example.carepet.user.UserApplication
 import com.example.carepet.user.UserViewModel
 import com.example.carepet.user.UserViewModelFactory
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
 import java.util.*
 
 class MainFragment : Fragment() {
@@ -37,6 +46,8 @@ class MainFragment : Fragment() {
     private val medicationViewModel: MedicationViewModel by viewModels {
         MedicationViewModelFactory((requireActivity().application as UserApplication).repository)
     }
+
+    private val mImagePath: String = ""
 
 
     override fun onCreateView(
@@ -184,6 +195,25 @@ class MainFragment : Fragment() {
 
         playGreetings()
 
+
+        fun saveImageToInternalStorage(bitmap: Bitmap): String{
+            val wrapper = ContextWrapper(context)
+
+            var file = wrapper.getDir(IMAGE_DIRECTORY, Context.MODE_PRIVATE) //only accesed by application
+            file = File(file, "${UUID.randomUUID()}.jpg" )
+
+            try{
+                val stream : OutputStream = FileOutputStream(file)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
+                stream.flush()
+                stream.close()
+            }catch (e: IOException){
+                e.printStackTrace()
+            }
+
+            return file.absolutePath
+        }
+
         val userName = "Carlos"
         val user: User = User(
                 1,
@@ -207,10 +237,9 @@ class MainFragment : Fragment() {
 
         val medication: Medication = Medication(
                 1,
-                "Adderall",
-                "image",
+                "drawable/adderall.png",
                 date,
-                12312312,
+                DurationTypes.WEEKLY.duration,
                 weekdays,
                 3,
                 1,
@@ -218,6 +247,8 @@ class MainFragment : Fragment() {
 
         )
         medicationViewModel.insertOrUpdateMedication(medication)
+
+        //mImagePath = saveImageToInternalStorage("drawable/adderall.png")
 
 
     }

@@ -6,10 +6,7 @@
     app:startDestination="@id/destination_main">
 
     <dialog
-        android:id="@+id/destination_dialogue"
-        android:name="com.example.carepet.dialog.DialogMedicationFragment"
-        android:label="fragment_dialog"
-        tools:layout="@layout/fragment_medication_dialog"/>
+        android:id="@+id/destination_dialogue"/>
     <fragment
         android:id="@+id/destination_main"
         android:name="com.example.carepet.MainFragment"
@@ -49,6 +46,18 @@
         <action
             android:id="@+id/action_medicationListFragment_to_destination_main"
             app:destination="@id/destination_main" />
+        <action
+            android:id="@+id/action_medicationListFragment_to_medicationAddFragment"
+            app:destination="@id/medicationAddFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/medicationAddFragment"
+        android:name="com.example.carepet.medication.MedicationAddFragment"
+        android:label="fragment_medication_add"
+        tools:layout="@layout/fragment_medication_add" >
+        <action
+            android:id="@+id/action_medicationAddFragment_to_medicationListFragment"
+            app:destination="@id/medicationListFragment" />
     </fragment>
 
 </navigation>

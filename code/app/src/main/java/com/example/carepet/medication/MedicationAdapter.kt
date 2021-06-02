@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.carepet.R
 import com.example.carepet.databinding.FragmentMedicationBinding
 import com.example.carepet.model.Medication
 import com.example.carepet.model.User
@@ -18,7 +19,7 @@ class MedicationAdapter(
 
     class ViewHolder(view: FragmentMedicationBinding): RecyclerView.ViewHolder(view.root) {
         val medicationImage = view.imageViewMedication
-        val medicationName = view.textViewMedication
+        val medicationText = view.textViewMedication
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,17 +31,18 @@ class MedicationAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val medication = medications[position].medications[position]
+        //
         Glide.with(fragment)
-                .load(medication)
-                .into(holder.medicationImage)
-        holder.medicationName.text = medication.medicationName
+                .load(R.drawable.adderall)
+                .into(holder.medicationImage);
+        holder.medicationText.text = medication.medicationDailyRepetitions.toString() +" vezes por "+ medication.medicationDuration
     }
 
     override fun getItemCount(): Int {
         return medications.size
     }
 
-    fun medicationsList(list: List<UserWithMedication>){ //notify registerd observes, let them know to adjust accordingly UI
+    fun medicationsList(list: List<UserWithMedication>){ //notify registered observes, let them know to adjust accordingly UI
         medications = list
         notifyDataSetChanged()
     }
