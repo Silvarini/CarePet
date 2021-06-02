@@ -1,12 +1,12 @@
 package com.example.carepet.enum
 
 enum class AffectionLevelEnum(
-        PETTING: String,
-        MEDICATION_TAKING: String,
-        TASK_NOTIFICATION: String,
-        TASK_COMPLETED: String,
-        TASK_SNOOZED: String,
-        TASK_SKIPPED: String
+        val PETTING: String,
+        val MEDICATION_TAKING: String,
+        val TASK_NOTIFICATION: String,
+        val TASK_COMPLETED: String,
+        val TASK_SNOOZED: String,
+        val TASK_SKIPPED: String
 ) {
         ONE(
                 MEDICATION_TAKING = "Vamos tomar a medicação!",

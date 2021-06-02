@@ -1,6 +1,9 @@
 package com.example.carepet
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.ContextWrapper
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -9,17 +12,42 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.example.carepet.common.Constants.IMAGE_DIRECTORY
 import com.example.carepet.databinding.FragmentMainBinding
+import com.example.carepet.enum.DurationTypes
+import com.example.carepet.medication.MedicationViewModel
+import com.example.carepet.medication.MedicationViewModelFactory
+import com.example.carepet.model.Medication
+import com.example.carepet.model.User
+import com.example.carepet.model.Weekdays
+import com.example.carepet.user.UserApplication
 import com.example.carepet.user.UserViewModel
-import kotlinx.coroutines.delay
+import com.example.carepet.user.UserViewModelFactory
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
+import java.util.*
 
 class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
+
+
+    private val userViewModel: UserViewModel by viewModels {
+        UserViewModelFactory((requireActivity().application as UserApplication).repository)
+    }
+
+    private val medicationViewModel: MedicationViewModel by viewModels {
+        MedicationViewModelFactory((requireActivity().application as UserApplication).repository)
+    }
+
+    private val mImagePath: String = ""
 
 
     override fun onCreateView(
@@ -30,11 +58,18 @@ class MainFragment : Fragment() {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
 
         binding.buttonMedication.setOnClickListener{
-            it.findNavController().navigate(MainFragmentDirections.actionMainActivityToMedication())
+            it.findNavController().navigate(MainFragmentDirections.actionDestinationMainToMedicationListFragment())
         }
 
+        binding.buttonHelp.setOnClickListener{
+            it.findNavController().navigate(MainFragmentDirections.actionDestinationMainToTaskCalendarFragment())
+        }
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 
 
@@ -46,6 +81,7 @@ class MainFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onStart() {
         super.onStart()
+
 
         val videoViewPet = binding.videoViewPet
 
@@ -64,11 +100,24 @@ class MainFragment : Fragment() {
             videoViewPet.start()
         }
 
-        fun playEndPet(){
+        fun playEndPet() {
+            var id = 0
+            var name = ""
+            var pettingScore = 0
+            var taskScore = 0
             playAnimation(animationEndPet)
+            userViewModel.getAllUserData.observe(viewLifecycleOwner) { scores ->
+                scores.let {
+                    for (item in it) {
+                        id = item.userId
+                        name = item.name
+                        pettingScore = item.pettingScore
+                        taskScore = item.taskScore
+                    }
+                }
+            }
+            userViewModel.savePettingScores(id, name, userViewModel.increasePettingScore(pettingScore), taskScore)
             findNavController().navigate(MainFragmentDirections.actionDestinationMainToDialogPetFragment())
-
-
         }
 
         fun playReceivingPet(){
@@ -147,6 +196,59 @@ class MainFragment : Fragment() {
         playGreetings()
 
 
+        fun saveImageToInternalStorage(bitmap: Bitmap): String{
+            val wrapper = ContextWrapper(context)
+
+            var file = wrapper.getDir(IMAGE_DIRECTORY, Context.MODE_PRIVATE) //only accesed by application
+            file = File(file, "${UUID.randomUUID()}.jpg" )
+
+            try{
+                val stream : OutputStream = FileOutputStream(file)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
+                stream.flush()
+                stream.close()
+            }catch (e: IOException){
+                e.printStackTrace()
+            }
+
+            return file.absolutePath
+        }
+
+        val userName = "Carlos"
+        val user: User = User(
+                1,
+                userName,
+                0,
+                0
+        )
+        userViewModel.insertOrUpdateUser(user)
+
+        val weekdays: Weekdays = Weekdays(
+                true,
+                true,
+                true,
+                true,
+                false,
+                false,
+                false
+        )
+
+        val date: Date = Date(1321321)
+
+        val medication: Medication = Medication(
+                1,
+                "drawable/adderall.png",
+                date,
+                DurationTypes.WEEKLY.duration,
+                weekdays,
+                3,
+                1,
+                1
+
+        )
+        medicationViewModel.insertOrUpdateMedication(medication)
+
+        //mImagePath = saveImageToInternalStorage("drawable/adderall.png")
 
 
     }

@@ -5,38 +5,59 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/destination_main">
 
-    <fragment
-        android:id="@+id/destination_medication"
-        android:name="com.example.carepet.medication.MedicationFragment"
-        android:label="fragment_medication_list"
-        tools:layout="@layout/fragment_medication_list" >
-        <action
-            android:id="@+id/action_medication_to_mainActivity"
-            app:destination="@id/destination_main" />
-    </fragment>
     <dialog
-        android:id="@+id/destination_dialogue"
-        android:name="com.example.carepet.dialog.DialogMedicationFragment"
-        android:label="fragment_dialog"
-        tools:layout="@layout/fragment_medication_dialog"/>
+        android:id="@+id/destination_dialogue"/>
     <fragment
         android:id="@+id/destination_main"
         android:name="com.example.carepet.MainFragment"
         android:label="MainActivity"
         tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_mainActivity_to_medication"
-            app:destination="@id/destination_medication" />
-        <action
             android:id="@+id/action_destination_main_to_destination_dialogue"
             app:destination="@id/destination_dialogue" />
         <action
             android:id="@+id/action_destination_main_to_dialogPetFragment"
             app:destination="@id/dialogPetFragment" />
+        <action
+            android:id="@+id/action_destination_main_to_taskCalendarFragment"
+            app:destination="@id/taskCalendarFragment" />
+        <action
+            android:id="@+id/action_destination_main_to_medicationListFragment"
+            app:destination="@id/medicationListFragment" />
     </fragment>
     <dialog
         android:id="@+id/dialogPetFragment"
         android:name="com.example.carepet.dialog.DialogPetFragment"
         android:label="DialogPetFragment" />
+    <fragment
+        android:id="@+id/taskCalendarFragment"
+        android:name="com.example.carepet.TaskCalendarFragment"
+        android:label="fragment_task_calendar2"
+        tools:layout="@layout/fragment_task_calendar" >
+        <action
+            android:id="@+id/action_taskCalendarFragment_to_destination_main"
+            app:destination="@id/destination_main" />
+    </fragment>
+    <fragment
+        android:id="@+id/medicationListFragment"
+        android:name="com.example.carepet.medication.MedicationListFragment"
+        android:label="fragment_medication_list"
+        tools:layout="@layout/fragment_medication_list">
+        <action
+            android:id="@+id/action_medicationListFragment_to_destination_main"
+            app:destination="@id/destination_main" />
+        <action
+            android:id="@+id/action_medicationListFragment_to_medicationAddFragment"
+            app:destination="@id/medicationAddFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/medicationAddFragment"
+        android:name="com.example.carepet.medication.MedicationAddFragment"
+        android:label="fragment_medication_add"
+        tools:layout="@layout/fragment_medication_add" >
+        <action
+            android:id="@+id/action_medicationAddFragment_to_medicationListFragment"
+            app:destination="@id/medicationListFragment" />
+    </fragment>
 
 </navigation>

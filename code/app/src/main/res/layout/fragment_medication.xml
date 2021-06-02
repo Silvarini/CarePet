@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:context=".medication.MedicationFragment">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:id="@+id/imageView_medication"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_90sdp"
+        tools:srcCompat="@tools:sample/avatars"/>
 
     <TextView
-        android:id="@+id/content"
-        android:layout_width="251dp"
-        android:layout_height="95dp"
-        android:layout_margin="@dimen/text_margin"
+        android:id="@+id/textView_medication"
+        android:text="Tomas"
+        android:textSize="@dimen/_17sdp"
+        android:layout_width="@dimen/_190sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_gravity="center"
         android:textAppearance="?attr/textAppearanceListItem" />
 
 
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,21 +1,27 @@
 package com.example.carepet.user
 
-import android.app.Application
-import androidx.lifecycle.LiveData
+import androidx.annotation.WorkerThread
+import com.example.carepet.model.Medication
 import com.example.carepet.model.User
+import com.example.carepet.model.relations.UserWithMedication
 import com.example.carepet.storage.UserDao
-import com.example.carepet.storage.UserDatabase
+import kotlinx.coroutines.flow.Flow
 
-class UserRepository(application: Application) {
+class UserRepository(private val userDAO: UserDao) {
 
-    val db: UserDatabase = UserDatabase.getDatabase(application)
-
-    private val userDao: UserDao = db.userDao()
-    private val allUserData: LiveData<List<User>>? = userDao.getAllUserData()
-
-    fun getAllUserData(): LiveData<List<User>>? {
-        return allUserData
+    @WorkerThread
+    suspend fun insertOrUpdateUser(user: User){
+        userDAO.insertOrUpdateUser(user)
     }
 
+    @WorkerThread
+    suspend fun insertOrUpdateMedication(medication: Medication){
+        userDAO.insertOrUpdateMedication(medication)
+    }
+
+
+    val getAllUserData: Flow<List<User>> = userDAO.getAllUserData()
+
+    val getAllMedication: Flow<List<UserWithMedication>> = userDAO.getMedicationsOfUser(1) // perceber se esta bem feita as querys e testar como no video a schema da base de dados.
 
 }
