@@ -26,7 +26,6 @@ class MedicationAdapter(
         val binding: FragmentMedicationBinding = FragmentMedicationBinding.inflate(
                 LayoutInflater.from(fragment.context), parent, false)
         return ViewHolder(binding)
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

@@ -14,10 +14,24 @@ class MedicationViewModel(
     private val repository: UserRepository
 ): ViewModel() {
 
+    var takingQuantity = 1
+
     fun insertOrUpdateMedication(medication: Medication) = viewModelScope.launch {
       repository.insertOrUpdateMedication(medication)
    }
 
     val getAllMedication: LiveData<List<UserWithMedication>> = repository.getAllMedication.asLiveData()
+
+
+     fun incrementQuantity(): Int{
+        return takingQuantity++
+    }
+
+     fun decrementQuantity(): Int{
+         if(takingQuantity >= 2) {
+             return takingQuantity--
+         }else return takingQuantity
+    }
+
 
 }

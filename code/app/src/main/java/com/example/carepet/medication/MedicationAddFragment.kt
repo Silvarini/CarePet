@@ -1,59 +1,97 @@
 package com.example.carepet.medication
 
-import android.content.Context
-import android.content.ContextWrapper
-import android.graphics.Bitmap
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.example.carepet.R
-import com.example.carepet.common.Constants
-import com.example.carepet.databinding.FragmentMedicationAddBinding
-import com.karumi.dexter.Dexter
-import kotlinx.android.synthetic.main.fragment_medication_add.view.*
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
-import java.util.*
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
-import android.widget.Toast
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.example.carepet.common.Constants
 import com.example.carepet.common.Constants.CAMERA
+import com.example.carepet.databinding.FragmentMedicationAddBinding
+import com.example.carepet.user.UserApplication
+import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
-class MedicationAddFragment : Fragment() {
+class MedicationAddFragment : Fragment(){
+
+    private val medicationViewModel: MedicationViewModel by viewModels {
+        MedicationViewModelFactory((requireActivity().application as UserApplication).repository)
+    }
 
     private var _binding: FragmentMedicationAddBinding? = null
     private val binding get() = _binding!!
 
 
     private val mImagePath: String = ""
+    private var formatDate = SimpleDateFormat("dd MMMM YYYY", Locale.US)
+
+
+
+
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMedicationAddBinding.inflate(inflater, container, false)
 
-        binding.imageViewPhotoAdd.setOnClickListener{
-                imageSelectionDialog()
-                binding.imageViewPhotoAdd.visibility = View.GONE
-
+        binding.imageViewPhotoAdd.setOnClickListener {
+            imageSelectionDialog()
+            binding.imageViewPhotoAdd.visibility = View.GONE
         }
 
+        binding.buttonIncrementQuantity.setOnClickListener{
+            medicationViewModel.incrementQuantity()
+            binding.textViewQuantityValue.text = medicationViewModel.takingQuantity.toString()
+        }
+
+        binding.buttonDecrementQuantity.setOnClickListener{
+            medicationViewModel.decrementQuantity()
+            binding.textViewQuantityValue.text = medicationViewModel.takingQuantity.toString()
+        }
+
+
+/* SELECT DATE SLIDER
+        binding.buttonInitialDate.setOnClickListener(View.OnClickListener{
+            val getDate: Calendar = Calendar.getInstance()
+            val datePicker = DatePickerDialog(this.requireActivity(), android.R.style.Theme_Holo_Light_Dialog_MinWidth,DatePickerDialog.OnDateSetListener{
+                datePicker, i, i2, i3 ->
+
+                val selectDate: Calendar = Calendar.getInstance()
+                selectDate.set(Calendar.YEAR,i)
+                selectDate.set(Calendar.MONTH,i2)
+                selectDate.set(Calendar.DAY_OF_MONTH,i3)
+                val date = formatDate.format(selectDate.time)
+                binding.buttonInitialDate.setText("Data Inicial: "+ date)
+
+
+            }, getDate.get(Calendar.YEAR), getDate.get(Calendar.MONTH), getDate.get(Calendar.DAY_OF_MONTH))
+            datePicker.show()
+            })
+*/
 
         return binding.root
     }
@@ -164,6 +202,11 @@ class MedicationAddFragment : Fragment() {
         }
     }
 
+
+
+
     //mImagePath = saveImageToInternalStorage()
+
+
 
 }
