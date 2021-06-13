@@ -7,8 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.example.carepet.databinding.FragmentQuantitySelectorBinding
-import kotlinx.android.synthetic.main.fragment_quantity_selector.view.*
+
 
 
 class MedicationAddAdapter{}

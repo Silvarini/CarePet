@@ -17,7 +17,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import com.example.carepet.MainFragmentDirections
+import com.example.carepet.R
 import com.example.carepet.common.Constants
 import com.example.carepet.common.Constants.CAMERA
 import com.example.carepet.databinding.FragmentMedicationAddBinding
@@ -36,7 +40,7 @@ import java.util.*
 
 class MedicationAddFragment : Fragment(){
 
-    private val medicationViewModel: MedicationViewModel by viewModels {
+    private val medicationViewModel: MedicationViewModel by activityViewModels {
         MedicationViewModelFactory((requireActivity().application as UserApplication).repository)
     }
 
@@ -55,7 +59,7 @@ class MedicationAddFragment : Fragment(){
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMedicationAddBinding.inflate(inflater, container, false)
 
         binding.imageViewPhotoAdd.setOnClickListener {
@@ -63,14 +67,10 @@ class MedicationAddFragment : Fragment(){
             binding.imageViewPhotoAdd.visibility = View.GONE
         }
 
-        binding.buttonIncrementQuantity.setOnClickListener{
-            medicationViewModel.incrementQuantity()
-            binding.textViewQuantityValue.text = medicationViewModel.takingQuantity.toString()
-        }
 
-        binding.buttonDecrementQuantity.setOnClickListener{
-            medicationViewModel.decrementQuantity()
-            binding.textViewQuantityValue.text = medicationViewModel.takingQuantity.toString()
+        binding.buttonConfirm.setOnClickListener{
+            medicationViewModel.confirmMedicationTaking()
+            binding.fragmentContainerView.visibility = View.GONE
         }
 
 

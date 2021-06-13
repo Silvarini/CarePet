@@ -246,7 +246,20 @@ class MainFragment : Fragment() {
                 1
 
         )
+
+        val medication2: Medication = Medication(
+                2,
+                "drawable/adderall.png",
+                date,
+                DurationTypes.WEEKLY.duration,
+                weekdays,
+                2,
+                2,
+                1
+
+        )
         medicationViewModel.insertOrUpdateMedication(medication)
+        medicationViewModel.insertOrUpdateMedication(medication2)
 
         //mImagePath = saveImageToInternalStorage("drawable/adderall.png")
 

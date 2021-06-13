@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:id="@+id/relativeLayout3"
+    android:layout_height="420dp"
+    android:layout_marginTop="12dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="@dimen/_300sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="13dp"
+        android:background="@drawable/radious_on_layour">
+
+
+        <TextView
+            android:id="@+id/textView_quantity_title"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="13dp"
+            android:firstBaselineToTopHeight="@dimen/_30sdp"
+            android:text="QUANTIDADE TOMAS DIARIAS"
+            android:textSize="@dimen/_15sdp" />
+
+        <TextView
+            android:id="@+id/textView_quantity_value"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/_19sdp"
+            android:layout_marginEnd="-9dp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_toStartOf="@+id/button_increment_quantity"
+            android:firstBaselineToTopHeight="@dimen/_25sdp"
+            android:text="1"
+            android:textSelectHandleRight="@dimen/_40sdp"
+            android:textSize="@dimen/_20sdp" />
+
+        <ImageView
+            android:id="@+id/button_increment_quantity"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:src="@drawable/ic_baseline_navigate_next_24" />
+
+        <ImageView
+            android:id="@+id/button_decrement_quantity"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:layout_toStartOf="@+id/textView_quantity_value"
+            android:src="@drawable/ic_baseline_navigate_before_24" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout2"
+        android:layout_width="398dp"
+        android:layout_height="@dimen/_140sdp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:background="@drawable/radious_on_layour">
+
+        <TextView
+            android:id="@+id/textView_duration"
+            android:layout_width="@dimen/_300sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:text="Duração"
+            android:textSize="@dimen/_15sdp" />
+
+        <Button
+            android:id="@+id/button_week"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_below="@+id/textView_duration"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/round_button"
+            android:text="Semana"
+            android:textSize="@dimen/_10sdp" />
+
+        <Button
+            android:id="@+id/button_month"
+            android:layout_width="79dp"
+            android:layout_height="41dp"
+            android:layout_below="@+id/textView_duration"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="126dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginEnd="193dp"
+            android:background="@drawable/round_button"
+            android:text="Mês"
+            android:textSize="@dimen/_10sdp" />
+
+        <Button
+            android:id="@+id/button_year"
+            android:layout_width="76dp"
+            android:layout_height="41dp"
+            android:layout_below="@+id/textView_duration"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="215dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="107dp"
+            android:background="@drawable/round_button"
+            android:text="Year"
+            android:textSize="@dimen/_10sdp" />
+
+        <Button
+            android:id="@+id/button_forever"
+            android:layout_width="95dp"
+            android:layout_height="39dp"
+            android:layout_below="@+id/textView_duration"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="301dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/round_button"
+            android:text="Sempre"
+            android:textSize="@dimen/_10sdp" />
+
+        <TextView
+            android:id="@+id/textView_quantity_title_weekly"
+            android:layout_width="159dp"
+            android:layout_height="65dp"
+            android:layout_below="@+id/button_week"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="199dp"
+            android:firstBaselineToTopHeight="@dimen/_30sdp"
+            android:text="Semana"
+            android:textSize="@dimen/_15sdp" />
+
+        <ImageView
+            android:id="@+id/button_decrement_quantity_weekly"
+            android:layout_width="64dp"
+            android:layout_height="53dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="-199dp"
+            android:layout_marginTop="111dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="26dp"
+            android:layout_toStartOf="@+id/textView_quantity_value_weekly"
+            android:src="@drawable/ic_baseline_navigate_before_24" />
+
+        <TextView
+            android:id="@+id/textView_quantity_value_weekly"
+            android:layout_width="25dp"
+            android:layout_height="51dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="113dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="26dp"
+            android:layout_toStartOf="@+id/button_increment_quantity_weekly"
+            android:firstBaselineToTopHeight="@dimen/_25sdp"
+            android:text="1"
+            android:textSelectHandleRight="@dimen/_40sdp"
+            android:textSize="@dimen/_20sdp" />
+
+        <ImageView
+            android:id="@+id/button_increment_quantity_weekly"
+            android:layout_width="58dp"
+            android:layout_height="54dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="111dp"
+            android:layout_marginEnd="44dp"
+            android:layout_marginBottom="27dp"
+            android:src="@drawable/ic_baseline_navigate_next_24" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="395dp"
+        android:layout_height="75dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="11dp"
+        android:background="@drawable/radious_on_layour"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_monday"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="@dimen/_13sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/round_button"
+            android:text="S" />
+
+        <Button
+            android:id="@+id/button_tuesday"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/round_button"
+            android:text="T" />
+
+        <Button
+            android:id="@+id/button_wednesday"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/round_button"
+            android:text="Q" />
+
+        <Button
+            android:id="@+id/button_thursday"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/round_button"
+            android:text="Q" />
+
+        <Button
+            android:id="@+id/button_friday"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/round_button"
+            android:text="S" />
+
+        <Button
+            android:id="@+id/button_saturday"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/round_button"
+            android:text="S" />
+
+        <Button
+            android:id="@+id/button_sunday"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/round_button"
+            android:text="S" />
+
+        </LinearLayout>
+    </LinearLayout>

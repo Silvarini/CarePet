@@ -16,6 +16,7 @@
     <TextView
         android:id="@+id/textView_medication"
         android:text="Tomas"
+        android:textColor="@color/cardview_dark_background"
         android:textSize="@dimen/_17sdp"
         android:layout_width="@dimen/_190sdp"
         android:layout_height="@dimen/_60sdp"

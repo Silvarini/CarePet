@@ -32,8 +32,8 @@ interface UserDao {
 
 
     @Transaction
-    @Query("SELECT * FROM user WHERE user_id = :userId")
-    fun getMedicationsOfUser(userId: Int): Flow<List<UserWithMedication>>
+    @Query("SELECT * FROM Medication WHERE medication_user_id = :userId")
+    fun getMedicationsOfUser(userId: Int): Flow<List<Medication>>
 
 
     @Transaction
