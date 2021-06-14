@@ -24,6 +24,11 @@ class MedicationViewModel(
     var saturday = false
     var sunday = false
 
+    var textViewDoseQuantity = ""
+    var textViewSchedule = ""
+    var doseQuantityValue = 0
+    var doseScheduleValue = 0
+
 
     fun insertOrUpdateMedication(medication: Medication) = viewModelScope.launch {
       repository.insertOrUpdateMedication(medication)
@@ -122,6 +127,19 @@ class MedicationViewModel(
         )
         Log.i("WWWWWEEEEKDAY", "WEEEEEK : $weekdays")
     }
+
+
+    fun incrementDose(doseQuantity: Int): Int{
+        var aux = doseQuantity
+        return aux++
+    }
+
+    fun decrementDose(doseQuantity: Int): Int{
+        var aux = doseQuantity
+        return aux--
+    }
+
+
 
 
 }

@@ -33,16 +33,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container_view_dose"
-        android:name="com.example.carepet.medication.MedicationAddDosesFragment"
-        android:layout_width="412dp"
+
+    <ListView
+        android:id="@+id/listView_doses"
+        android:layout_width="409dp"
         android:layout_height="432dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_confirm"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_medicationImage" />
+        app:layout_constraintTop_toTopOf="@+id/imageView_photoAdd"
+        app:layout_constraintVertical_bias="0.993" />
+
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_view"

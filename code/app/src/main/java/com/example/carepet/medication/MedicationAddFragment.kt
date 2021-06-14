@@ -3,10 +3,7 @@ package com.example.carepet.medication
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.ContextWrapper
-import android.content.Intent
+import android.content.*
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -16,6 +13,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.BaseAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -31,12 +30,14 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import kotlinx.android.synthetic.main.fragment_medication_doses.view.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MedicationAddFragment : Fragment(){
 
@@ -52,7 +53,13 @@ class MedicationAddFragment : Fragment(){
     private var formatDate = SimpleDateFormat("dd MMMM YYYY", Locale.US)
 
 
-
+    data class ItemData(
+            val quantityTitle: String,
+            val scheduleTitle: String,
+            var quantityValue: Int,
+            var scheduleMinutes: Int,
+            var scheduleHours: Int
+            )
 
 
     override fun onCreateView(
@@ -68,32 +75,125 @@ class MedicationAddFragment : Fragment(){
         }
 
 
+        fun initAdapterWithData(): ArrayList<ItemData>{
+           val itemDataList = ArrayList<ItemData>()
+            for (i in 0..medicationViewModel.takingQuantity){
+                itemDataList.add(ItemData("QUANTIDADE ${i+1} DOSE", "HORARIO ${i+1} DOSE", 1, 0,0))
+            }
+            return itemDataList
+
+
+        }
+
         binding.buttonConfirm.setOnClickListener{
             medicationViewModel.confirmMedicationTaking()
             binding.fragmentContainerView.visibility = View.GONE
+            val listView = binding.listViewDoses
+            listView.adapter = MyCustomAdapter(this.requireContext(),initAdapterWithData())
         }
 
 
-/* SELECT DATE SLIDER
-        binding.buttonInitialDate.setOnClickListener(View.OnClickListener{
-            val getDate: Calendar = Calendar.getInstance()
-            val datePicker = DatePickerDialog(this.requireActivity(), android.R.style.Theme_Holo_Light_Dialog_MinWidth,DatePickerDialog.OnDateSetListener{
-                datePicker, i, i2, i3 ->
-
-                val selectDate: Calendar = Calendar.getInstance()
-                selectDate.set(Calendar.YEAR,i)
-                selectDate.set(Calendar.MONTH,i2)
-                selectDate.set(Calendar.DAY_OF_MONTH,i3)
-                val date = formatDate.format(selectDate.time)
-                binding.buttonInitialDate.setText("Data Inicial: "+ date)
-
-
-            }, getDate.get(Calendar.YEAR), getDate.get(Calendar.MONTH), getDate.get(Calendar.DAY_OF_MONTH))
-            datePicker.show()
-            })
-*/
-
         return binding.root
+    }
+    private class MyCustomAdapter(context: Context, itemDataList: ArrayList<ItemData>): BaseAdapter() {
+
+        private val mContext: Context
+        val _itemDataList = itemDataList
+
+        init{
+            mContext = context
+        }
+
+
+        override fun getCount(): Int {
+            return _itemDataList.size-1
+        }
+
+        override fun getItem(position: Int): Any {
+            return position.toLong()
+        }
+
+        override fun getItemId(position: Int): Long {
+            return position.toLong()
+        }
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            val layoutInflater = LayoutInflater.from(mContext)
+            val rowMain = layoutInflater.inflate(R.layout.fragment_medication_doses, parent, false)
+
+            fun bindData(itemData:ItemData){
+                rowMain.textView_quantity_title.text = itemData.quantityTitle
+                rowMain.textView_schedule_title.text = itemData.scheduleTitle
+                rowMain.textView_quantity_value.text = "${itemData.quantityValue}"
+                rowMain.textView_schedule_hours_value.text = "${itemData.scheduleHours}"
+                rowMain.textView_schedule_minutes_value.text = "${itemData.scheduleMinutes}"
+            }
+
+            fun addDose(itemData: ItemData, position: Int) {
+                itemData.quantityValue+=1
+                rowMain.textView_quantity_value.text = "${itemData.quantityValue}"
+            }
+
+            fun minusDose(itemData: ItemData, position: Int) {
+                itemData.quantityValue-=1
+                rowMain.textView_quantity_value.text = "${itemData.quantityValue}"
+            }
+
+            fun addHour(itemData: ItemData, position: Int) {
+                itemData.scheduleHours+=1
+                rowMain.textView_schedule_hours_value.text = "${itemData.scheduleHours}"
+            }
+
+            fun minusHour(itemData: ItemData, position: Int) {
+                itemData.scheduleHours-=1
+                rowMain.textView_schedule_hours_value.text = "${itemData.scheduleHours}"
+            }
+
+            fun addMinutes(itemData: ItemData, position: Int) {
+                itemData.scheduleMinutes+=1
+                rowMain.textView_schedule_minutes_value.text = "${itemData.scheduleMinutes}"
+            }
+
+            fun minusMinutes(itemData: ItemData, position: Int) {
+                itemData.scheduleMinutes-=1
+                rowMain.textView_schedule_minutes_value.text = "${itemData.scheduleMinutes}"
+            }
+            bindData(_itemDataList[position])
+
+            rowMain.button_increment_quantity.setOnClickListener{
+                addDose(_itemDataList[position], position)
+                Log.i("HEEEEELP","$position")
+            }
+
+            rowMain.button_decrement_quantity.setOnClickListener{
+                minusDose(_itemDataList[position], position)
+                Log.i("HEEEEELP","$position")
+            }
+
+            rowMain.button_increment_hours.setOnClickListener{
+                addHour(_itemDataList[position], position)
+                Log.i("HEEEEELP","$position")
+            }
+
+            rowMain.button_decrement_hours.setOnClickListener{
+                minusHour(_itemDataList[position], position)
+                Log.i("HEEEEELP","$position")
+            }
+
+            rowMain.button_increment_minutes.setOnClickListener{
+                addMinutes(_itemDataList[position], position)
+                Log.i("HEEEEELP","$position")
+            }
+
+            rowMain.button_decrement_minutes.setOnClickListener{
+                minusMinutes(_itemDataList[position], position)
+                Log.i("HEEEEELP","$position")
+            }
+
+
+            return rowMain
+        }
+
     }
 
 
