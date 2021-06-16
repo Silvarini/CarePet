@@ -3,6 +3,7 @@ package com.example.carepet.medication
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.carepet.enum.DurationTypes
+import com.example.carepet.model.Doses
 import com.example.carepet.model.Medication
 import com.example.carepet.model.User
 import com.example.carepet.model.Weekdays
@@ -33,6 +34,10 @@ class MedicationViewModel(
     fun insertOrUpdateMedication(medication: Medication) = viewModelScope.launch {
       repository.insertOrUpdateMedication(medication)
    }
+
+    fun insertOrUpdateDoses(doses: Doses) = viewModelScope.launch {
+        repository.insertOrUpdateDoses(doses)
+    }
 
     val getAllMedication: LiveData<List<Medication>> = repository.getAllMedication.asLiveData()
 
@@ -115,7 +120,7 @@ class MedicationViewModel(
 
 
 
-    fun confirmMedicationTaking() {
+    fun confirmMedicationTaking(): Weekdays {
         val weekdays: Weekdays = Weekdays(
                 monday,
                 tuesday,
@@ -126,17 +131,7 @@ class MedicationViewModel(
                 sunday
         )
         Log.i("WWWWWEEEEKDAY", "WEEEEEK : $weekdays")
-    }
-
-
-    fun incrementDose(doseQuantity: Int): Int{
-        var aux = doseQuantity
-        return aux++
-    }
-
-    fun decrementDose(doseQuantity: Int): Int{
-        var aux = doseQuantity
-        return aux--
+        return weekdays
     }
 
 

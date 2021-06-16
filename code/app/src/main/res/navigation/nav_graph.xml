@@ -61,6 +61,9 @@
         <action
             android:id="@+id/action_medicationAddFragment_to_dialogPetFragment"
             app:destination="@id/dialogPetFragment" />
+        <action
+            android:id="@+id/action_medicationAddFragment_to_destination_main"
+            app:destination="@id/destination_main" />
     </fragment>
     <dialog
         android:id="@+id/medicationAddDosesFragment"

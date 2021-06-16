@@ -2,10 +2,7 @@ package com.example.carepet.storage
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.carepet.model.Medication
-import com.example.carepet.model.Task
-import com.example.carepet.model.User
-import com.example.carepet.model.UserLogin
+import com.example.carepet.model.*
 import com.example.carepet.model.relations.UserWithMedication
 import com.example.carepet.model.relations.UserWithTasks
 import kotlinx.coroutines.flow.Flow
@@ -18,6 +15,10 @@ interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdateMedication(medication: Medication)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrUpdateDoses(doses: Doses)
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdateTask(task: Task)

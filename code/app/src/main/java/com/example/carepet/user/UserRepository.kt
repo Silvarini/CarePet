@@ -1,6 +1,7 @@
 package com.example.carepet.user
 
 import androidx.annotation.WorkerThread
+import com.example.carepet.model.Doses
 import com.example.carepet.model.Medication
 import com.example.carepet.model.User
 import com.example.carepet.model.relations.UserWithMedication
@@ -17,6 +18,11 @@ class UserRepository(private val userDAO: UserDao) {
     @WorkerThread
     suspend fun insertOrUpdateMedication(medication: Medication){
         userDAO.insertOrUpdateMedication(medication)
+    }
+
+    @WorkerThread
+    suspend fun insertOrUpdateDoses(doses: Doses){
+        userDAO.insertOrUpdateDoses(doses)
     }
 
 

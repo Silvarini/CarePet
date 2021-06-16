@@ -3,27 +3,30 @@ package com.example.carepet.medication
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.*
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
-import com.example.carepet.MainFragmentDirections
+import androidx.navigation.fragment.findNavController
 import com.example.carepet.R
 import com.example.carepet.common.Constants
 import com.example.carepet.common.Constants.CAMERA
 import com.example.carepet.databinding.FragmentMedicationAddBinding
+import com.example.carepet.enum.DurationTypes
+import com.example.carepet.model.Doses
+import com.example.carepet.model.Medication
+import com.example.carepet.model.Weekdays
 import com.example.carepet.user.UserApplication
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -35,7 +38,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -48,9 +50,19 @@ class MedicationAddFragment : Fragment(){
     private var _binding: FragmentMedicationAddBinding? = null
     private val binding get() = _binding!!
 
+    val itemDataList = ArrayList<ItemData>()
+    private var quantityDose: Int = 0 //taking array size
 
-    private val mImagePath: String = ""
-    private var formatDate = SimpleDateFormat("dd MMMM YYYY", Locale.US)
+
+    //Medication Attributes
+    private var mImagePath: String = ""
+    private var scheduleDoseHour: Int = 0
+    private var medicationId: Int = 0
+    private var scheduleDoseMinutes: Int = 0
+    private var medicationDurationType: String = DurationTypes.WEEKLY.duration
+    private var medicationPeriodQuantity: Int = 0
+    private var userId: Int = 1
+
 
 
     data class ItemData(
@@ -60,6 +72,8 @@ class MedicationAddFragment : Fragment(){
             var scheduleMinutes: Int,
             var scheduleHours: Int
             )
+
+
 
 
     override fun onCreateView(
@@ -81,15 +95,22 @@ class MedicationAddFragment : Fragment(){
                 itemDataList.add(ItemData("QUANTIDADE ${i+1} DOSE", "HORARIO ${i+1} DOSE", 1, 0,0))
             }
             return itemDataList
-
-
         }
 
         binding.buttonConfirm.setOnClickListener{
             medicationViewModel.confirmMedicationTaking()
-            binding.fragmentContainerView.visibility = View.GONE
+            if(binding.fragmentContainerView.visibility != View.GONE) {
+                binding.fragmentContainerView.visibility = View.GONE
+            } else{
+                val medicationDoses: Doses = Doses(medicationId,scheduleDoseHour, scheduleDoseMinutes)
+                val newMedication : Medication = Medication(medicationId,mImagePath,quantityDose,medicationDurationType, medicationPeriodQuantity,medicationViewModel.confirmMedicationTaking(),userId)
+                medicationViewModel.insertOrUpdateMedication(newMedication)
+                medicationViewModel.insertOrUpdateDoses(medicationDoses)
+                findNavController().navigate(MedicationAddFragmentDirections.actionMedicationAddFragmentToDestinationMain())
+            }
             val listView = binding.listViewDoses
             listView.adapter = MyCustomAdapter(this.requireContext(),initAdapterWithData())
+
         }
 
 
@@ -103,7 +124,6 @@ class MedicationAddFragment : Fragment(){
         init{
             mContext = context
         }
-
 
         override fun getCount(): Int {
             return _itemDataList.size-1
@@ -162,32 +182,26 @@ class MedicationAddFragment : Fragment(){
 
             rowMain.button_increment_quantity.setOnClickListener{
                 addDose(_itemDataList[position], position)
-                Log.i("HEEEEELP","$position")
             }
 
             rowMain.button_decrement_quantity.setOnClickListener{
                 minusDose(_itemDataList[position], position)
-                Log.i("HEEEEELP","$position")
             }
 
             rowMain.button_increment_hours.setOnClickListener{
                 addHour(_itemDataList[position], position)
-                Log.i("HEEEEELP","$position")
             }
 
             rowMain.button_decrement_hours.setOnClickListener{
                 minusHour(_itemDataList[position], position)
-                Log.i("HEEEEELP","$position")
             }
 
             rowMain.button_increment_minutes.setOnClickListener{
                 addMinutes(_itemDataList[position], position)
-                Log.i("HEEEEELP","$position")
             }
 
             rowMain.button_decrement_minutes.setOnClickListener{
                 minusMinutes(_itemDataList[position], position)
-                Log.i("HEEEEELP","$position")
             }
 
 
@@ -226,7 +240,7 @@ class MedicationAddFragment : Fragment(){
         }catch (e: IOException){
             e.printStackTrace()
         }
-
+     //   mImagePath = file.absolutePath
         return file.absolutePath
     }
 
@@ -297,6 +311,7 @@ class MedicationAddFragment : Fragment(){
                 data?.extras?.let{
                     val thumbnail : Bitmap = data.extras!!.get("data") as Bitmap
                     binding.imageViewMedicationImage.setImageBitmap(thumbnail)
+                    saveImageToInternalStorage(thumbnail)
                 }
             }
         }

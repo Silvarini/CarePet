@@ -109,6 +109,7 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
+    implementation 'com.google.code.gson:gson:2.8.6'
 
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
@@ -116,7 +117,6 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.3.0'
 
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
-
 
 
 

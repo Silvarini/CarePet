@@ -1,10 +1,12 @@
 package com.example.carepet.medication
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.blue
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -72,31 +74,58 @@ class MedicationAddTaking: Fragment() {
 
         binding.buttonMonday.setOnClickListener {
             medicationViewModel.selectedMonday()
+            if(medicationViewModel.monday)
+                binding.buttonMonday.setBackgroundColor(0xff60a0e0.toInt())
+            if(!medicationViewModel.monday)
+                binding.buttonMonday.setBackgroundColor(Color.BLACK)
         }
 
         binding.buttonTuesday.setOnClickListener {
             medicationViewModel.selectedTuesday()
+            if(medicationViewModel.tuesday)
+                binding.buttonTuesday.setBackgroundColor(0xff60a0e0.toInt())
+            if(!medicationViewModel.tuesday)
+                binding.buttonTuesday.setBackgroundColor(Color.BLACK)
         }
 
         binding.buttonWednesday.setOnClickListener {
             medicationViewModel.selectedWednesday()
+            if(medicationViewModel.wednesday)
+                binding.buttonWednesday.setBackgroundColor(0xff60a0e0.toInt())
+            if(!medicationViewModel.wednesday)
+                binding.buttonWednesday.setBackgroundColor(Color.BLACK)
         }
 
         binding.buttonThursday.setOnClickListener {
             medicationViewModel.selectedThursday()
+            if(medicationViewModel.thursday)
+                binding.buttonThursday.setBackgroundColor(0xff60a0e0.toInt())
+            if(!medicationViewModel.thursday)
+                binding.buttonThursday.setBackgroundColor(Color.BLACK)
         }
 
         binding.buttonFriday.setOnClickListener {
             medicationViewModel.selectedFriday()
+            if(medicationViewModel.friday)
+                binding.buttonFriday.setBackgroundColor(0xff60a0e0.toInt())
+            if(!medicationViewModel.friday)
+                binding.buttonFriday.setBackgroundColor(Color.BLACK)
         }
 
         binding.buttonSaturday.setOnClickListener {
             medicationViewModel.selectedSaturday()
+            if(medicationViewModel.saturday)
+                binding.buttonSaturday.setBackgroundColor(0xff60a0e0.toInt())
+            if(!medicationViewModel.saturday)
+                binding.buttonSaturday.setBackgroundColor(Color.BLACK)
         }
 
         binding.buttonSunday.setOnClickListener {
             medicationViewModel.selectedSunday()
-            Log.i("CLIIICK", "CLIKSSKS")
+            if(medicationViewModel.sunday)
+                binding.buttonSunday.setBackgroundColor(0xff60a0e0.toInt())
+            if(!medicationViewModel.sunday)
+                binding.buttonSunday.setBackgroundColor(Color.BLACK)
         }
 
     }

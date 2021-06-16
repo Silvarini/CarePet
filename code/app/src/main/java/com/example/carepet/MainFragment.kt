@@ -21,6 +21,7 @@ import com.example.carepet.databinding.FragmentMainBinding
 import com.example.carepet.enum.DurationTypes
 import com.example.carepet.medication.MedicationViewModel
 import com.example.carepet.medication.MedicationViewModelFactory
+import com.example.carepet.model.Doses
 import com.example.carepet.model.Medication
 import com.example.carepet.model.User
 import com.example.carepet.model.Weekdays
@@ -32,6 +33,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MainFragment : Fragment() {
 
@@ -47,7 +49,6 @@ class MainFragment : Fragment() {
         MedicationViewModelFactory((requireActivity().application as UserApplication).repository)
     }
 
-    private val mImagePath: String = ""
 
 
     override fun onCreateView(
@@ -66,10 +67,6 @@ class MainFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
 
@@ -101,7 +98,7 @@ class MainFragment : Fragment() {
         }
 
         fun playEndPet() {
-            var id = 0
+            var id = 1
             var name = ""
             var pettingScore = 0
             var taskScore = 0
@@ -233,16 +230,16 @@ class MainFragment : Fragment() {
                 false
         )
 
-        val date: Date = Date(1321321)
+        val doses: Doses = Doses(1,10,10)
+
 
         val medication: Medication = Medication(
                 1,
                 "drawable/adderall.png",
-                date,
+                2,
                 DurationTypes.WEEKLY.duration,
-                weekdays,
                 3,
-                1,
+                weekdays,
                 1
 
         )
@@ -250,11 +247,10 @@ class MainFragment : Fragment() {
         val medication2: Medication = Medication(
                 2,
                 "drawable/adderall.png",
-                date,
+                1,
                 DurationTypes.WEEKLY.duration,
+                3,
                 weekdays,
-                2,
-                2,
                 1
 
         )
