@@ -7,10 +7,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.carepet.common.Converters
-import com.example.carepet.model.Medication
-import com.example.carepet.model.Task
-import com.example.carepet.model.User
-import com.example.carepet.model.UserLogin
+import com.example.carepet.model.*
 
 /**
  * The underlying database where information about the donuts is stored.
@@ -19,9 +16,10 @@ import com.example.carepet.model.UserLogin
     User::class,
     Medication::class,
     Task::class,
-    UserLogin::class
+    UserLogin::class,
+    Doses::class
     ],
-        version = 3
+        version = 8
 )
 @TypeConverters(Converters::class)
 abstract class UserDatabase : RoomDatabase() {

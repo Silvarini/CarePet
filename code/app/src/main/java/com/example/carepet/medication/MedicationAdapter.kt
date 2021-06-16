@@ -15,7 +15,7 @@ class MedicationAdapter(
         private val fragment: Fragment
         ) : RecyclerView.Adapter<MedicationAdapter.ViewHolder>() {
 
-    private var medications: List<UserWithMedication> = listOf()
+    private var medications: List<Medication> = listOf()
 
     class ViewHolder(view: FragmentMedicationBinding): RecyclerView.ViewHolder(view.root) {
         val medicationImage = view.imageViewMedication
@@ -26,23 +26,22 @@ class MedicationAdapter(
         val binding: FragmentMedicationBinding = FragmentMedicationBinding.inflate(
                 LayoutInflater.from(fragment.context), parent, false)
         return ViewHolder(binding)
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val medication = medications[position].medications[position]
+        val medication = medications[position]
         //
         Glide.with(fragment)
                 .load(R.drawable.adderall)
                 .into(holder.medicationImage);
-        holder.medicationText.text = medication.medicationDailyRepetitions.toString() +" vezes por "+ medication.medicationDuration
+        holder.medicationText.text = medications[position].medicationDailyRepetitions.toString() +" vezes por "+ medications[position].medicationDuration
     }
 
     override fun getItemCount(): Int {
         return medications.size
     }
 
-    fun medicationsList(list: List<UserWithMedication>){ //notify registered observes, let them know to adjust accordingly UI
+    fun medicationsList(list: List<Medication>){ //notify registered observes, let them know to adjust accordingly UI
         medications = list
         notifyDataSetChanged()
     }

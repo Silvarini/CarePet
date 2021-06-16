@@ -1,61 +1,213 @@
 package com.example.carepet.medication
 
+import android.Manifest
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.provider.MediaStore
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.BaseAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.carepet.R
 import com.example.carepet.common.Constants
+import com.example.carepet.common.Constants.CAMERA
 import com.example.carepet.databinding.FragmentMedicationAddBinding
+import com.example.carepet.enum.DurationTypes
+import com.example.carepet.model.Doses
+import com.example.carepet.model.Medication
+import com.example.carepet.model.Weekdays
+import com.example.carepet.user.UserApplication
 import com.karumi.dexter.Dexter
-import kotlinx.android.synthetic.main.fragment_medication_add.view.*
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import kotlinx.android.synthetic.main.fragment_medication_doses.view.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
 import java.util.*
-import android.Manifest
-import android.app.Activity
-import android.app.AlertDialog
-import android.content.ActivityNotFoundException
-import android.content.Intent
-import android.net.Uri
-import android.provider.MediaStore
-import android.provider.Settings
-import android.util.Log
-import android.widget.Toast
-import com.example.carepet.common.Constants.CAMERA
-import com.karumi.dexter.MultiplePermissionsReport
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import kotlin.collections.ArrayList
 
-class MedicationAddFragment : Fragment() {
+class MedicationAddFragment : Fragment(){
+
+    private val medicationViewModel: MedicationViewModel by activityViewModels {
+        MedicationViewModelFactory((requireActivity().application as UserApplication).repository)
+    }
 
     private var _binding: FragmentMedicationAddBinding? = null
     private val binding get() = _binding!!
 
+    val itemDataList = ArrayList<ItemData>()
+    private var quantityDose: Int = 0 //taking array size
 
-    private val mImagePath: String = ""
+
+    //Medication Attributes
+    private var mImagePath: String = ""
+    private var scheduleDoseHour: Int = 0
+    private var medicationId: Int = 0
+    private var scheduleDoseMinutes: Int = 0
+    private var medicationDurationType: String = DurationTypes.WEEKLY.duration
+    private var medicationPeriodQuantity: Int = 0
+    private var userId: Int = 1
+
+
+
+    data class ItemData(
+            val quantityTitle: String,
+            val scheduleTitle: String,
+            var quantityValue: Int,
+            var scheduleMinutes: Int,
+            var scheduleHours: Int
+            )
+
+
+
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMedicationAddBinding.inflate(inflater, container, false)
 
-        binding.imageViewPhotoAdd.setOnClickListener{
-                imageSelectionDialog()
-                binding.imageViewPhotoAdd.visibility = View.GONE
+        binding.imageViewPhotoAdd.setOnClickListener {
+            imageSelectionDialog()
+            binding.imageViewPhotoAdd.visibility = View.GONE
+        }
+
+
+        fun initAdapterWithData(): ArrayList<ItemData>{
+           val itemDataList = ArrayList<ItemData>()
+            for (i in 0..medicationViewModel.takingQuantity){
+                itemDataList.add(ItemData("QUANTIDADE ${i+1} DOSE", "HORARIO ${i+1} DOSE", 1, 0,0))
+            }
+            return itemDataList
+        }
+
+        binding.buttonConfirm.setOnClickListener{
+            medicationViewModel.confirmMedicationTaking()
+            if(binding.fragmentContainerView.visibility != View.GONE) {
+                binding.fragmentContainerView.visibility = View.GONE
+            } else{
+                val medicationDoses: Doses = Doses(medicationId,scheduleDoseHour, scheduleDoseMinutes)
+                val newMedication : Medication = Medication(medicationId,mImagePath,quantityDose,medicationDurationType, medicationPeriodQuantity,medicationViewModel.confirmMedicationTaking(),userId)
+                medicationViewModel.insertOrUpdateMedication(newMedication)
+                medicationViewModel.insertOrUpdateDoses(medicationDoses)
+                findNavController().navigate(MedicationAddFragmentDirections.actionMedicationAddFragmentToDestinationMain())
+            }
+            val listView = binding.listViewDoses
+            listView.adapter = MyCustomAdapter(this.requireContext(),initAdapterWithData())
 
         }
 
 
         return binding.root
+    }
+    private class MyCustomAdapter(context: Context, itemDataList: ArrayList<ItemData>): BaseAdapter() {
+
+        private val mContext: Context
+        val _itemDataList = itemDataList
+
+        init{
+            mContext = context
+        }
+
+        override fun getCount(): Int {
+            return _itemDataList.size-1
+        }
+
+        override fun getItem(position: Int): Any {
+            return position.toLong()
+        }
+
+        override fun getItemId(position: Int): Long {
+            return position.toLong()
+        }
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            val layoutInflater = LayoutInflater.from(mContext)
+            val rowMain = layoutInflater.inflate(R.layout.fragment_medication_doses, parent, false)
+
+            fun bindData(itemData:ItemData){
+                rowMain.textView_quantity_title.text = itemData.quantityTitle
+                rowMain.textView_schedule_title.text = itemData.scheduleTitle
+                rowMain.textView_quantity_value.text = "${itemData.quantityValue}"
+                rowMain.textView_schedule_hours_value.text = "${itemData.scheduleHours}"
+                rowMain.textView_schedule_minutes_value.text = "${itemData.scheduleMinutes}"
+            }
+
+            fun addDose(itemData: ItemData, position: Int) {
+                itemData.quantityValue+=1
+                rowMain.textView_quantity_value.text = "${itemData.quantityValue}"
+            }
+
+            fun minusDose(itemData: ItemData, position: Int) {
+                itemData.quantityValue-=1
+                rowMain.textView_quantity_value.text = "${itemData.quantityValue}"
+            }
+
+            fun addHour(itemData: ItemData, position: Int) {
+                itemData.scheduleHours+=1
+                rowMain.textView_schedule_hours_value.text = "${itemData.scheduleHours}"
+            }
+
+            fun minusHour(itemData: ItemData, position: Int) {
+                itemData.scheduleHours-=1
+                rowMain.textView_schedule_hours_value.text = "${itemData.scheduleHours}"
+            }
+
+            fun addMinutes(itemData: ItemData, position: Int) {
+                itemData.scheduleMinutes+=1
+                rowMain.textView_schedule_minutes_value.text = "${itemData.scheduleMinutes}"
+            }
+
+            fun minusMinutes(itemData: ItemData, position: Int) {
+                itemData.scheduleMinutes-=1
+                rowMain.textView_schedule_minutes_value.text = "${itemData.scheduleMinutes}"
+            }
+            bindData(_itemDataList[position])
+
+            rowMain.button_increment_quantity.setOnClickListener{
+                addDose(_itemDataList[position], position)
+            }
+
+            rowMain.button_decrement_quantity.setOnClickListener{
+                minusDose(_itemDataList[position], position)
+            }
+
+            rowMain.button_increment_hours.setOnClickListener{
+                addHour(_itemDataList[position], position)
+            }
+
+            rowMain.button_decrement_hours.setOnClickListener{
+                minusHour(_itemDataList[position], position)
+            }
+
+            rowMain.button_increment_minutes.setOnClickListener{
+                addMinutes(_itemDataList[position], position)
+            }
+
+            rowMain.button_decrement_minutes.setOnClickListener{
+                minusMinutes(_itemDataList[position], position)
+            }
+
+
+            return rowMain
+        }
+
     }
 
 
@@ -88,7 +240,7 @@ class MedicationAddFragment : Fragment() {
         }catch (e: IOException){
             e.printStackTrace()
         }
-
+     //   mImagePath = file.absolutePath
         return file.absolutePath
     }
 
@@ -159,11 +311,17 @@ class MedicationAddFragment : Fragment() {
                 data?.extras?.let{
                     val thumbnail : Bitmap = data.extras!!.get("data") as Bitmap
                     binding.imageViewMedicationImage.setImageBitmap(thumbnail)
+                    saveImageToInternalStorage(thumbnail)
                 }
             }
         }
     }
 
+
+
+
     //mImagePath = saveImageToInternalStorage()
+
+
 
 }

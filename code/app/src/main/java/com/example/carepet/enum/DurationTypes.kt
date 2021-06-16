@@ -3,8 +3,9 @@ package com.example.carepet.enum
 enum class DurationTypes(
         val duration : String
 ) {
-    FOREVER("sempre"),
-    ONCE("uma vez"),
-    WEEKLY("semana"),
-    MONTHLY("mes")
+    FOREVER("Sempre"),
+    ONCE("Uma vez"),
+    WEEKLY("Semana"),
+    MONTHLY("Mes"),
+    ANUALY("Ano")
 }

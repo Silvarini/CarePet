@@ -56,8 +56,19 @@
         android:label="fragment_medication_add"
         tools:layout="@layout/fragment_medication_add" >
         <action
-            android:id="@+id/action_medicationAddFragment_to_medicationListFragment"
-            app:destination="@id/medicationListFragment" />
+            android:id="@+id/action_medicationAddFragment_to_medicationAddDosesFragment"
+            app:destination="@id/medicationAddDosesFragment" />
+        <action
+            android:id="@+id/action_medicationAddFragment_to_dialogPetFragment"
+            app:destination="@id/dialogPetFragment" />
+        <action
+            android:id="@+id/action_medicationAddFragment_to_destination_main"
+            app:destination="@id/destination_main" />
     </fragment>
+    <dialog
+        android:id="@+id/medicationAddDosesFragment"
+        android:name="com.example.carepet.medication.MedicationAddDosesFragment"
+        android:label="fragment_medication_add_doses"
+        tools:layout="@layout/fragment_medication_add_doses" />
 
 </navigation>

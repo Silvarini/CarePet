@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/medication_add_doses_fragment"
+    tools:context=".medication.MedicationAddFragment">
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:background="@drawable/radious_on_layour">
+
+
+        <TextView
+            android:id="@+id/textView_quantity_title"
+            android:layout_width="197dp"
+            android:layout_height="81dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="14dp"
+            android:layout_weight="1"
+            android:firstBaselineToTopHeight="@dimen/_40sdp"
+            android:text="QUANTIDADE 1 DOSE"
+            android:textSize="@dimen/_15sdp"/>
+
+        <ImageView
+            android:id="@+id/button_decrement_quantity"
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="28dp"
+            android:layout_toStartOf="@+id/textView_quantity_value"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_baseline_navigate_before_24" />
+
+        <TextView
+            android:id="@+id/textView_quantity_value"
+            android:layout_width="28dp"
+            android:layout_height="46dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="-2dp"
+            android:layout_marginBottom="26dp"
+            android:layout_toStartOf="@+id/button_increment_quantity"
+            android:layout_weight="1"
+            android:firstBaselineToTopHeight="@dimen/_20sdp"
+            android:text="1"
+            android:textSelectHandleRight="@dimen/_40sdp"
+            android:textSize="@dimen/_20sdp" />
+
+        <ImageView
+                android:id="@+id/button_increment_quantity"
+                android:layout_width="62dp"
+                android:layout_height="37dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="29dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="30dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_navigate_next_24" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:background="@drawable/radious_on_layour">
+
+        <TextView
+            android:id="@+id/textView_schedule_title"
+            android:layout_width="197dp"
+            android:layout_height="81dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="14dp"
+            android:layout_weight="1"
+            android:firstBaselineToTopHeight="@dimen/_40sdp"
+            android:text="HORARIO 1 DOSE"
+            android:textSize="@dimen/_15sdp"/>
+
+        <ImageView
+            android:id="@+id/button_increment_minutes"
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="-5dp"
+            android:layout_marginEnd="21dp"
+            android:layout_marginBottom="61dp"
+            android:layout_weight="1"
+            android:rotation="92"
+            app:srcCompat="@drawable/ic_baseline_navigate_before_24" />
+
+
+        <TextView
+            android:id="@+id/textView_schedule_minutes_value"
+            android:layout_width="37dp"
+            android:layout_height="47dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="25dp"
+            android:layout_weight="1"
+            android:firstBaselineToTopHeight="@dimen/_20sdp"
+            android:text="00"
+            android:textSelectHandleRight="@dimen/_40sdp"
+            android:textSize="@dimen/_20sdp" />
+
+        <ImageView
+            android:id="@+id/button_decrement_minutes"
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="63dp"
+            android:layout_marginEnd="21dp"
+            android:layout_marginBottom="-7dp"
+            android:layout_weight="1"
+            android:rotation="-88"
+            app:srcCompat="@drawable/ic_baseline_navigate_before_24" />
+
+
+        <ImageView
+            android:id="@+id/button_increment_hours"
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="-2dp"
+            android:layout_marginEnd="83dp"
+            android:layout_marginBottom="58dp"
+            android:layout_weight="1"
+            android:rotation="92"
+            app:srcCompat="@drawable/ic_baseline_navigate_before_24" />
+
+        <TextView
+            android:id="@+id/textView_schedule_hours_value"
+            android:layout_width="37dp"
+            android:layout_height="47dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="33dp"
+            android:layout_marginEnd="96dp"
+            android:layout_marginBottom="24dp"
+            android:layout_weight="1"
+            android:firstBaselineToTopHeight="@dimen/_20sdp"
+            android:text="00"
+            android:textSelectHandleRight="@dimen/_40sdp"
+            android:textSize="@dimen/_20sdp" />
+
+        <ImageView
+            android:id="@+id/button_decrement_hours"
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="66dp"
+            android:layout_marginEnd="83dp"
+            android:layout_marginBottom="-10dp"
+            android:layout_weight="1"
+            android:rotation="-88"
+            app:srcCompat="@drawable/ic_baseline_navigate_before_24" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

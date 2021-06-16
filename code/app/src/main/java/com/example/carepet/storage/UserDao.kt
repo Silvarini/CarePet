@@ -2,10 +2,7 @@ package com.example.carepet.storage
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.carepet.model.Medication
-import com.example.carepet.model.Task
-import com.example.carepet.model.User
-import com.example.carepet.model.UserLogin
+import com.example.carepet.model.*
 import com.example.carepet.model.relations.UserWithMedication
 import com.example.carepet.model.relations.UserWithTasks
 import kotlinx.coroutines.flow.Flow
@@ -20,6 +17,10 @@ interface UserDao {
     suspend fun insertOrUpdateMedication(medication: Medication)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrUpdateDoses(doses: Doses)
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdateTask(task: Task)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -32,8 +33,8 @@ interface UserDao {
 
 
     @Transaction
-    @Query("SELECT * FROM user WHERE user_id = :userId")
-    fun getMedicationsOfUser(userId: Int): Flow<List<UserWithMedication>>
+    @Query("SELECT * FROM Medication WHERE medication_user_id = :userId")
+    fun getMedicationsOfUser(userId: Int): Flow<List<Medication>>
 
 
     @Transaction
