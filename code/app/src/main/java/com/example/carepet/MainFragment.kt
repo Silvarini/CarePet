@@ -33,7 +33,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MainFragment : Fragment() {
 
@@ -219,47 +218,6 @@ class MainFragment : Fragment() {
                 0
         )
         userViewModel.insertOrUpdateUser(user)
-
-        val weekdays: Weekdays = Weekdays(
-                true,
-                true,
-                true,
-                true,
-                false,
-                false,
-                false
-        )
-
-        val doses: Doses = Doses(1,10,10)
-
-
-        val medication: Medication = Medication(
-                1,
-                "drawable/adderall.png",
-                2,
-                DurationTypes.WEEKLY.duration,
-                3,
-                weekdays,
-                1
-
-        )
-
-        val medication2: Medication = Medication(
-                2,
-                "drawable/adderall.png",
-                1,
-                DurationTypes.WEEKLY.duration,
-                3,
-                weekdays,
-                1
-
-        )
-        medicationViewModel.insertOrUpdateMedication(medication)
-        medicationViewModel.insertOrUpdateMedication(medication2)
-
-        //mImagePath = saveImageToInternalStorage("drawable/adderall.png")
-
-
     }
 
 

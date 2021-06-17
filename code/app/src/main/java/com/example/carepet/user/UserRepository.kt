@@ -26,8 +26,10 @@ class UserRepository(private val userDAO: UserDao) {
     }
 
 
+
     val getAllUserData: Flow<List<User>> = userDAO.getAllUserData()
 
     val getAllMedication: Flow<List<Medication>> = userDAO.getMedicationsOfUser(1) // perceber se esta bem feita as querys e testar como no video a schema da base de dados.
 
+    val getMedicationId: Flow<Int> = userDAO.getMedicationId()
 }

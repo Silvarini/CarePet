@@ -19,7 +19,7 @@ import com.example.carepet.model.*
     UserLogin::class,
     Doses::class
     ],
-        version = 8
+        version = 11
 )
 @TypeConverters(Converters::class)
 abstract class UserDatabase : RoomDatabase() {

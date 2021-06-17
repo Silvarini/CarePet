@@ -17,7 +17,7 @@ data class Medication(
     val medicationPhoto: String,
 
     @ColumnInfo(name = "medication_repetitions")
-    val medicationDailyRepetitions: Int,
+    val medicationDailyRepetitions: Int, //how many doses of that medication exist
 
     @ColumnInfo(name = "medication_duration")
     val medicationDuration: String,

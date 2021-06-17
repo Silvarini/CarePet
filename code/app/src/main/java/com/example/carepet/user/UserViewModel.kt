@@ -19,6 +19,7 @@ class UserViewModel(
 
 
 
+
      fun calculateAffectionScore(petting_score : Int, task_score: Int): AffectionLevelEnum {
         val affectionLevel = petting_score + task_score
 
