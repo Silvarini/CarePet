@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_destination_main_to_medicationListFragment"
             app:destination="@id/medicationListFragment" />
+        <action
+            android:id="@+id/action_destination_main_to_medicationDialogFragment"
+            app:destination="@id/medicationDialogFragment" />
     </fragment>
     <dialog
         android:id="@+id/dialogPetFragment"
@@ -31,12 +34,12 @@
         android:label="DialogPetFragment" />
     <fragment
         android:id="@+id/taskCalendarFragment"
-        android:name="com.example.carepet.TaskCalendarFragment"
-        android:label="fragment_task_calendar2"
+        android:name="com.example.carepet.task.TaskCalendarFragment"
+        android:label="fragment_task_calendar"
         tools:layout="@layout/fragment_task_calendar" >
         <action
-            android:id="@+id/action_taskCalendarFragment_to_destination_main"
-            app:destination="@id/destination_main" />
+            android:id="@+id/action_taskCalendarFragment_to_taskCreateFragment"
+            app:destination="@id/taskCreateFragment" />
     </fragment>
     <fragment
         android:id="@+id/medicationListFragment"
@@ -70,5 +73,19 @@
         android:name="com.example.carepet.medication.MedicationAddDosesFragment"
         android:label="fragment_medication_add_doses"
         tools:layout="@layout/fragment_medication_add_doses" />
+    <fragment
+        android:id="@+id/taskCreateFragment"
+        android:name="com.example.carepet.task.TaskCreateFragment"
+        android:label="fragment_task_create"
+        tools:layout="@layout/fragment_task_create" >
+        <action
+            android:id="@+id/action_taskCreateFragment_to_destination_main"
+            app:destination="@id/destination_main" />
+    </fragment>
+    <fragment
+        android:id="@+id/medicationDialogFragment"
+        android:name="com.example.carepet.dialog.MedicationDialogFragment"
+        android:label="fragment_medication_dialog"
+        tools:layout="@layout/fragment_medication_dialog" />
 
 </navigation>

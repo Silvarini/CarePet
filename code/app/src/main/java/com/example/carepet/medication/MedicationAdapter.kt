@@ -29,8 +29,6 @@ class MedicationAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val medication = medications[position]
-        //
         Glide.with(fragment)
                 .load(medications[position].medicationPhoto)
                 .into(holder.medicationImage);

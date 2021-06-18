@@ -61,7 +61,7 @@ class MainFragment : Fragment() {
             it.findNavController().navigate(MainFragmentDirections.actionDestinationMainToMedicationListFragment())
         }
 
-        binding.buttonHelp.setOnClickListener{
+        binding.buttonTask.setOnClickListener{
             it.findNavController().navigate(MainFragmentDirections.actionDestinationMainToTaskCalendarFragment())
         }
 

@@ -10,7 +10,10 @@ import com.example.carepet.R
 import com.example.carepet.databinding.FragmentMainBinding
 import com.example.carepet.medication.MedicationViewModel
 import com.example.carepet.medication.MedicationViewModelFactory
+import com.example.carepet.task.TaskViewModel
+import com.example.carepet.task.TaskViewModelFactory
 import com.example.carepet.user.UserApplication
+import com.example.carepet.user.UserRepository
 import com.example.carepet.user.UserViewModel
 import com.example.carepet.user.UserViewModelFactory
 
@@ -26,6 +29,10 @@ class MainActivity : AppCompatActivity() {
 
     private val medicationViewModel: MedicationViewModel by viewModels {
         MedicationViewModelFactory((application as UserApplication).repository)
+    }
+
+    private val taskViewModel: TaskViewModel by viewModels{
+        TaskViewModelFactory((application as UserApplication).repository)
     }
 
 
