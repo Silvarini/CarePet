@@ -20,6 +20,6 @@ The pet will interact when the user is petting him and depending on a communicat
 
 - [X]  Interaction with a virtual avatar 
 - [X]  Medication Functionality  
-- [ ]  Personal Task's Functionality  
+- [X]  Personal Task's Functionality  
 
  
