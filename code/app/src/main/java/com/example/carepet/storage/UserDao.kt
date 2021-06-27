@@ -19,7 +19,6 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdateDoses(doses: Doses)
 
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdateTask(task: Task)
 
@@ -38,8 +37,13 @@ interface UserDao {
 
 
     @Transaction
-    @Query("SELECT * FROM user WHERE user_id = :userId")
-    fun getTasksOfUser(userId: Int): Flow<List<UserWithTasks>>
+    @Query("SELECT MAX(medication_id) FROM Medication")
+    fun getMedicationId(): Flow<Int>
+
+
+    @Transaction
+    @Query("SELECT * FROM Task WHERE task_user_id = :userId")
+    fun getTasksOfUser(userId: Int): Flow<List<Task>>
 
 
 

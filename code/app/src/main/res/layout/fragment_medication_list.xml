@@ -18,7 +18,7 @@
         android:layout_width="260dp"
         android:layout_height="58dp"
         android:layout_marginTop="52dp"
-        android:text="New Medication"
+        android:text="Adicionar Medication"
         app:layout_constraintBottom_toTopOf="@+id/rv_medicationList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -8,15 +8,6 @@ object Constants {
     const val IMAGE_DIRECTORY: String = "CarepetImages"
     const val CAMERA: Int = 1
 
-    fun durationTypes():ArrayList<String>{
-        val list = ArrayList<String>()
-        list.add("Forever")
-        list.add("Once")
-        list.add("Weekly")
-        list.add("Monthly")
-        return list
-    }
-
 
 
 

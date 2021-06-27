@@ -29,12 +29,10 @@ class MedicationAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val medication = medications[position]
-        //
         Glide.with(fragment)
-                .load(R.drawable.adderall)
+                .load(medications[position].medicationPhoto)
                 .into(holder.medicationImage);
-        holder.medicationText.text = medications[position].medicationDailyRepetitions.toString() +" vezes por "+ medications[position].medicationDuration
+        holder.medicationText.text = medications[position].medicationDailyRepetitions.toString() +" vezes por dia"
     }
 
     override fun getItemCount(): Int {

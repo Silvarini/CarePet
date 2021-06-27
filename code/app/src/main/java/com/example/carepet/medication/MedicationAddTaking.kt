@@ -57,18 +57,22 @@ class MedicationAddTaking: Fragment() {
 
         binding.buttonWeek.setOnClickListener {
             binding.textViewQuantityTitleWeekly.text = medicationViewModel.selectedWeekly()
+            medicationViewModel.getDurationType(binding.textViewQuantityTitleWeekly.text.toString())
         }
 
         binding.buttonMonth.setOnClickListener {
             binding.textViewQuantityTitleWeekly.text = medicationViewModel.selectedMonthly()
+            medicationViewModel.getDurationType(binding.textViewQuantityTitleWeekly.text.toString())
         }
 
         binding.buttonYear.setOnClickListener {
             binding.textViewQuantityTitleWeekly.text = medicationViewModel.selectedAnualy()
+            medicationViewModel.getDurationType(binding.textViewQuantityTitleWeekly.text.toString())
         }
 
         binding.buttonForever.setOnClickListener {
             binding.textViewQuantityTitleWeekly.text = medicationViewModel.selectedForever()
+            medicationViewModel.getDurationType(binding.textViewQuantityTitleWeekly.text.toString())
         }
 
 

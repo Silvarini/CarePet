@@ -1,13 +1,10 @@
 package com.example.carepet.medication
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.carepet.enum.DurationTypes
 import com.example.carepet.model.Doses
 import com.example.carepet.model.Medication
-import com.example.carepet.model.User
 import com.example.carepet.model.Weekdays
-import com.example.carepet.model.relations.UserWithMedication
 import com.example.carepet.user.UserRepository
 import kotlinx.coroutines.launch
 
@@ -15,8 +12,25 @@ class MedicationViewModel(
     private val repository: UserRepository
 ): ViewModel() {
 
+
+    //Medication Attributes
+    var medicationId: Int = 0 // for the auto_increment to work, this needs to be 0
+    var mImagePath: String = ""
     var takingQuantity = 1
+    var medicationDurationType: String = DurationTypes.WEEKLY.duration
     var weeklyQuantity = 1
+    var userId: Int = 1
+
+    var lastMedicationId: Int = 0
+
+    //Dose Attributes
+    var doseQuantity: Int = 0
+    var scheduleDoseHour: Int = 0
+    var scheduleDoseMinutes: Int = 0
+
+    var dosePosition: Int = 0
+
+    //Weekdays
     var monday = false
     var tuesday = false
     var wednesday = false
@@ -25,12 +39,8 @@ class MedicationViewModel(
     var saturday = false
     var sunday = false
 
-    var textViewDoseQuantity = ""
-    var textViewSchedule = ""
-    var doseQuantityValue = 0
-    var doseScheduleValue = 0
 
-
+    ///////////////////////////////// DAO /////////////////////////////////
     fun insertOrUpdateMedication(medication: Medication) = viewModelScope.launch {
       repository.insertOrUpdateMedication(medication)
    }
@@ -41,14 +51,36 @@ class MedicationViewModel(
 
     val getAllMedication: LiveData<List<Medication>> = repository.getAllMedication.asLiveData()
 
+    val getMedicationId: LiveData<Int> = repository.getMedicationId.asLiveData()
 
+    ///////////////////////////////// MEDICATION CREATION SAVE /////////////////////////////////
+    fun saveMedication(){
+        val medication = Medication(0, mImagePath, takingQuantity, medicationDurationType, weeklyQuantity, confirmMedicationTaking(), 1)
+        val doses = Doses(0, doseQuantity, scheduleDoseHour,scheduleDoseMinutes,lastMedicationId)
+        insertOrUpdateMedication(medication)
+        insertOrUpdateDoses(doses)
+    }
+
+    fun getLastMedicationId(id: Int){
+        lastMedicationId = id + 1
+    }
+
+
+
+
+    ///////////////////////////////// MEDICATION CREATION TAKING /////////////////////////////////
+
+    // MEDICATION IMAGE
+    fun getMedicationImage(image: String){
+        mImagePath = image
+    }
+
+
+    // DAILY REPETITIONS QUANTITY
      fun incrementQuantity(): Int {
          return takingQuantity++
     }
 
-     fun incrementQuantityWeekly(): Int{
-         return weeklyQuantity++
-     }
 
      fun decrementQuantity(): Int{
          if(takingQuantity >= 1){
@@ -58,14 +90,7 @@ class MedicationViewModel(
          }
     }
 
-     fun decrementQuantityWeekly(): Int{
-         if(weeklyQuantity >= 1){
-            return weeklyQuantity--
-         }else{
-             return weeklyQuantity
-         }
-    }
-
+    // DURATION TYPE
     fun selectedWeekly():String{
         return DurationTypes.WEEKLY.duration
     }
@@ -75,15 +100,33 @@ class MedicationViewModel(
     }
 
     fun selectedAnualy():String{
-    return DurationTypes.ANUALY.duration
+        return DurationTypes.ANUALY.duration
     }
 
     fun selectedForever():String{
-    return DurationTypes.FOREVER.duration
+        return DurationTypes.FOREVER.duration
+    }
+
+    fun getDurationType(durationType: String){
+        medicationDurationType = durationType
     }
 
 
+    // DURATION QUANTITY
+    fun incrementQuantityWeekly(): Int{
+        return weeklyQuantity++
+    }
 
+    fun decrementQuantityWeekly(): Int{
+         if(weeklyQuantity >= 1){
+            return weeklyQuantity--
+         }else{
+             return weeklyQuantity
+         }
+    }
+
+
+    // WEEKDAYS
     fun selectedMonday(){
         monday = !monday
     }
@@ -118,10 +161,9 @@ class MedicationViewModel(
         sunday = !sunday
     }
 
-
-
+    // SAVE WEEKDAYS
     fun confirmMedicationTaking(): Weekdays {
-        val weekdays: Weekdays = Weekdays(
+        val weekdays = Weekdays(
                 monday,
                 tuesday,
                 wednesday,
@@ -130,11 +172,27 @@ class MedicationViewModel(
                 saturday,
                 sunday
         )
-        Log.i("WWWWWEEEEKDAY", "WEEEEEK : $weekdays")
         return weekdays
     }
 
+    ///////////////////////////////// MEDICATION CREATION DOSES /////////////////////////////////
 
+    // DOSE QUANTITY
+    fun getDosePosition(position: Int){
 
+    }
+
+    fun getDoseQuantity(quantity: Int){
+        doseQuantity = quantity
+    }
+
+    // DOSE SCHEDULE
+    fun getDoseHour(hour: Int){
+        scheduleDoseHour = hour
+    }
+
+    fun getDoseMinutes(minutes: Int){
+        scheduleDoseMinutes = minutes
+    }
 
 }

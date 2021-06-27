@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/taskCreateFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".task.TaskCreateFragment">
+
+
+    <RelativeLayout
+        android:id="@+id/layout_initial_schedule"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/radious_on_layour"
+        app:layout_constraintTop_toBottomOf="@+id/input_title"
+        tools:layout_editor_absoluteX="0dp">
+
+        <TextView
+            android:id="@+id/textView_initial_schedule_title"
+            android:layout_width="197dp"
+            android:layout_height="81dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="14dp"
+            android:layout_weight="1"
+            android:firstBaselineToTopHeight="@dimen/_40sdp"
+            android:text="Inicio: Dia, 00/00"
+            android:textSize="@dimen/_15sdp" />
+
+        <ImageView
+            android:id="@+id/button_increment_initial_minutes"
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="-5dp"
+            android:layout_marginEnd="21dp"
+            android:layout_marginBottom="61dp"
+            android:layout_weight="1"
+            android:rotation="92"
+            app:srcCompat="@drawable/ic_baseline_navigate_before_24" />
+
+
+        <TextView
+            android:id="@+id/textView_schedule_initial_minutes_value"
+            android:layout_width="37dp"
+            android:layout_height="47dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="25dp"
+            android:layout_weight="1"
+            android:firstBaselineToTopHeight="@dimen/_20sdp"
+            android:text="00"
+            android:textSelectHandleRight="@dimen/_40sdp"
+            android:textSize="@dimen/_20sdp" />
+
+        <ImageView
+            android:id="@+id/button_decrement_initial_minutes"
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="63dp"
+            android:layout_marginEnd="21dp"
+            android:layout_marginBottom="-7dp"
+            android:layout_weight="1"
+            android:rotation="-88"
+            app:srcCompat="@drawable/ic_baseline_navigate_before_24" />
+
+
+        <ImageView
+            android:id="@+id/button_increment_initial_hours"
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="-2dp"
+            android:layout_marginEnd="83dp"
+            android:layout_marginBottom="58dp"
+            android:layout_weight="1"
+            android:rotation="92"
+            app:srcCompat="@drawable/ic_baseline_navigate_before_24" />
+
+        <TextView
+            android:id="@+id/textView_schedule_initial_hours_value"
+            android:layout_width="37dp"
+            android:layout_height="47dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="33dp"
+            android:layout_marginEnd="96dp"
+            android:layout_marginBottom="24dp"
+            android:layout_weight="1"
+            android:firstBaselineToTopHeight="@dimen/_20sdp"
+            android:text="00"
+            android:textSelectHandleRight="@dimen/_40sdp"
+            android:textSize="@dimen/_20sdp" />
+
+        <ImageView
+            android:id="@+id/button_decrement_initial_hours"
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="66dp"
+            android:layout_marginEnd="83dp"
+            android:layout_marginBottom="-10dp"
+            android:layout_weight="1"
+            android:rotation="-88"
+            app:srcCompat="@drawable/ic_baseline_navigate_before_24" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_final_schedule"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/radious_on_layour"
+        app:layout_constraintTop_toBottomOf="@+id/layout_initial_schedule"
+        tools:layout_editor_absoluteX="0dp">
+
+        <TextView
+            android:id="@+id/textView_schedule_final_title"
+            android:layout_width="197dp"
+            android:layout_height="81dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="14dp"
+            android:layout_weight="1"
+            android:firstBaselineToTopHeight="@dimen/_40sdp"
+            android:text="Hora final:"
+            android:textSize="@dimen/_15sdp" />
+
+        <ImageView
+            android:id="@+id/button_increment_final_minutes"
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="-5dp"
+            android:layout_marginEnd="21dp"
+            android:layout_marginBottom="61dp"
+            android:layout_weight="1"
+            android:rotation="92"
+            app:srcCompat="@drawable/ic_baseline_navigate_before_24" />
+
+
+        <TextView
+            android:id="@+id/textView_schedule_final_minutes_value"
+            android:layout_width="37dp"
+            android:layout_height="47dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="25dp"
+            android:layout_weight="1"
+            android:firstBaselineToTopHeight="@dimen/_20sdp"
+            android:text="00"
+            android:textSelectHandleRight="@dimen/_40sdp"
+            android:textSize="@dimen/_20sdp" />
+
+        <ImageView
+            android:id="@+id/button_decrement_final_minutes"
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="63dp"
+            android:layout_marginEnd="21dp"
+            android:layout_marginBottom="-7dp"
+            android:layout_weight="1"
+            android:rotation="-88"
+            app:srcCompat="@drawable/ic_baseline_navigate_before_24" />
+
+
+        <ImageView
+            android:id="@+id/button_increment_final_hours"
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="-2dp"
+            android:layout_marginEnd="83dp"
+            android:layout_marginBottom="58dp"
+            android:layout_weight="1"
+            android:rotation="92"
+            app:srcCompat="@drawable/ic_baseline_navigate_before_24" />
+
+        <TextView
+            android:id="@+id/textView_schedule_final_hours_value"
+            android:layout_width="37dp"
+            android:layout_height="47dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="33dp"
+            android:layout_marginEnd="96dp"
+            android:layout_marginBottom="24dp"
+            android:layout_weight="1"
+            android:firstBaselineToTopHeight="@dimen/_20sdp"
+            android:text="00"
+            android:textSelectHandleRight="@dimen/_40sdp"
+            android:textSize="@dimen/_20sdp" />
+
+        <ImageView
+            android:id="@+id/button_decrement_final_hours"
+            android:layout_width="65dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="66dp"
+            android:layout_marginEnd="83dp"
+            android:layout_marginBottom="-10dp"
+            android:layout_weight="1"
+            android:rotation="-88"
+            app:srcCompat="@drawable/ic_baseline_navigate_before_24" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/button_confirm_new_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="108dp"
+        android:text="Ok"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_final_schedule" />
+
+    <TextView
+        android:id="@+id/textView_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:text="Título"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_20sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/input_title"
+        android:layout_width="290dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="24dp"
+        android:paddingLeft="@dimen/_5sdp"
+        android:background="#A5ACAC"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:textSize="@dimen/_25sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_title" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

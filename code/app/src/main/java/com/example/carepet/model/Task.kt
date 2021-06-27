@@ -6,29 +6,40 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
 
+
+
 @Entity
 data class Task (
-        @PrimaryKey(autoGenerate = false)
+        @PrimaryKey(autoGenerate = true)
         @ColumnInfo(name = "task_id")
         val taskId: Int,
 
         @ColumnInfo(name = "task_title")
-        val taskName: String,
+        val taskTitle: String,
 
-        @ColumnInfo(name = "task_initial_date")
-        val taskInitialDate: Date?,
+        @ColumnInfo(name = "task_initial_date_day")
+        val taskDateDay: Int,
 
-        @ColumnInfo(name = "task_duration")
-        val taskDuration: Int,
+        @ColumnInfo(name = "task_initial_date_month")
+        val taskDateMonth: Int,
 
-        @Embedded
-        val taskWeekdays: Weekdays,
+        @ColumnInfo(name = "task_initial_date_year")
+        val taskDateYear: Int,
 
-        @ColumnInfo(name = "task_repetitions")
-        val taskDailyRepetitions: String,
+        @ColumnInfo(name = "task_initialHour")
+        val taskInitialHour: Int,
 
-        @ColumnInfo(name = "task_quantity")
-        val taskPeriodQuantity: Int,
+        @ColumnInfo(name = "task_initialMinutes")
+        val taskInitialMinutes: Int,
+
+        @ColumnInfo(name = "task_finalHour")
+        val taskFinalHour: Int,
+
+        @ColumnInfo(name = "task_finalMinutes")
+        val taskFinalMinutes: Int,
+
+        @ColumnInfo(name = "task_completion")
+        val taskCompletion: String,
 
         @ColumnInfo(name = "task_user_id")
         val userId: Int

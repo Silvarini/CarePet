@@ -1,21 +1,25 @@
 package com.example.carepet.medication
 
 import android.Manifest
-import android.app.Activity
-import android.app.AlertDialog
+import android.app.*
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.provider.MediaStore
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -23,10 +27,10 @@ import com.example.carepet.R
 import com.example.carepet.common.Constants
 import com.example.carepet.common.Constants.CAMERA
 import com.example.carepet.databinding.FragmentMedicationAddBinding
+import com.example.carepet.dialog.AlarmReceiver
 import com.example.carepet.enum.DurationTypes
 import com.example.carepet.model.Doses
 import com.example.carepet.model.Medication
-import com.example.carepet.model.Weekdays
 import com.example.carepet.user.UserApplication
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -40,6 +44,7 @@ import java.io.IOException
 import java.io.OutputStream
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.absoluteValue
 
 class MedicationAddFragment : Fragment(){
 
@@ -50,18 +55,19 @@ class MedicationAddFragment : Fragment(){
     private var _binding: FragmentMedicationAddBinding? = null
     private val binding get() = _binding!!
 
-    val itemDataList = ArrayList<ItemData>()
-    private var quantityDose: Int = 0 //taking array size
+    private val itemDataList = ArrayList<Doses>()
+
 
 
     //Medication Attributes
-    private var mImagePath: String = ""
-    private var scheduleDoseHour: Int = 0
-    private var medicationId: Int = 0
-    private var scheduleDoseMinutes: Int = 0
-    private var medicationDurationType: String = DurationTypes.WEEKLY.duration
-    private var medicationPeriodQuantity: Int = 0
-    private var userId: Int = 1
+    var medicationId: Int = 0 // for the auto_increment to work, this needs to be 0
+    var mImagePath: String = ""
+    var userId: Int = 1
+
+    //Dose Attributes
+    var doseQuantity: Int = 0
+    var scheduleDoseHour: Int = 0
+    var scheduleDoseMinutes: Int = 0
 
 
 
@@ -82,6 +88,8 @@ class MedicationAddFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMedicationAddBinding.inflate(inflater, container, false)
+        createNotificationChannel()
+
 
         binding.imageViewPhotoAdd.setOnClickListener {
             imageSelectionDialog()
@@ -97,26 +105,59 @@ class MedicationAddFragment : Fragment(){
             return itemDataList
         }
 
+
+
+        medicationViewModel.getMedicationId.observe(viewLifecycleOwner){
+            if(it != null) {
+                medicationViewModel.getLastMedicationId(it)
+            }
+        }
+
         binding.buttonConfirm.setOnClickListener{
             medicationViewModel.confirmMedicationTaking()
             if(binding.fragmentContainerView.visibility != View.GONE) {
                 binding.fragmentContainerView.visibility = View.GONE
             } else{
-                val medicationDoses: Doses = Doses(medicationId,scheduleDoseHour, scheduleDoseMinutes)
-                val newMedication : Medication = Medication(medicationId,mImagePath,quantityDose,medicationDurationType, medicationPeriodQuantity,medicationViewModel.confirmMedicationTaking(),userId)
-                medicationViewModel.insertOrUpdateMedication(newMedication)
-                medicationViewModel.insertOrUpdateDoses(medicationDoses)
+                doseQuantity = binding.listViewDoses.textView_quantity_value.text.toString().toInt()
+                medicationViewModel.getDoseQuantity(doseQuantity)
+                scheduleDoseHour = binding.listViewDoses.textView_schedule_hours_value.text.toString().toInt()
+                medicationViewModel.getDoseHour(scheduleDoseHour)
+                scheduleDoseMinutes = binding.listViewDoses.textView_schedule_minutes_value.text.toString().toInt()
+                medicationViewModel.getDoseMinutes(scheduleDoseMinutes)
+                medicationViewModel.saveMedication()
                 findNavController().navigate(MedicationAddFragmentDirections.actionMedicationAddFragmentToDestinationMain())
             }
             val listView = binding.listViewDoses
             listView.adapter = MyCustomAdapter(this.requireContext(),initAdapterWithData())
+
 
         }
 
 
         return binding.root
     }
-    private class MyCustomAdapter(context: Context, itemDataList: ArrayList<ItemData>): BaseAdapter() {
+
+
+
+    private fun createNotificationChannel(){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+
+            val name: CharSequence = "CarePetReminderChannel"
+            val description = "Channel for Alarm Manager"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel("CarePet", name, importance)
+            channel.description = description
+            val notificationManager = activity?.getSystemService(
+                NotificationManager::class.java
+            )
+
+            notificationManager?.createNotificationChannel(channel)
+        }
+    }
+
+
+    class MyCustomAdapter(context: Context, itemDataList: ArrayList<ItemData>): BaseAdapter() {
 
         private val mContext: Context
         val _itemDataList = itemDataList
@@ -137,9 +178,10 @@ class MedicationAddFragment : Fragment(){
             return position.toLong()
         }
 
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
             val layoutInflater = LayoutInflater.from(mContext)
             val rowMain = layoutInflater.inflate(R.layout.fragment_medication_doses, parent, false)
+
 
             fun bindData(itemData:ItemData){
                 rowMain.textView_quantity_title.text = itemData.quantityTitle
@@ -149,59 +191,59 @@ class MedicationAddFragment : Fragment(){
                 rowMain.textView_schedule_minutes_value.text = "${itemData.scheduleMinutes}"
             }
 
-            fun addDose(itemData: ItemData, position: Int) {
+            fun addDose(itemData: ItemData) {
                 itemData.quantityValue+=1
                 rowMain.textView_quantity_value.text = "${itemData.quantityValue}"
             }
 
-            fun minusDose(itemData: ItemData, position: Int) {
+            fun minusDose(itemData: ItemData) {
                 itemData.quantityValue-=1
                 rowMain.textView_quantity_value.text = "${itemData.quantityValue}"
             }
 
-            fun addHour(itemData: ItemData, position: Int) {
+            fun addHour(itemData: ItemData) {
                 itemData.scheduleHours+=1
                 rowMain.textView_schedule_hours_value.text = "${itemData.scheduleHours}"
             }
 
-            fun minusHour(itemData: ItemData, position: Int) {
+            fun minusHour(itemData: ItemData) {
                 itemData.scheduleHours-=1
                 rowMain.textView_schedule_hours_value.text = "${itemData.scheduleHours}"
             }
 
-            fun addMinutes(itemData: ItemData, position: Int) {
+            fun addMinutes(itemData: ItemData) {
                 itemData.scheduleMinutes+=1
                 rowMain.textView_schedule_minutes_value.text = "${itemData.scheduleMinutes}"
             }
 
-            fun minusMinutes(itemData: ItemData, position: Int) {
+            fun minusMinutes(itemData: ItemData) {
                 itemData.scheduleMinutes-=1
                 rowMain.textView_schedule_minutes_value.text = "${itemData.scheduleMinutes}"
             }
             bindData(_itemDataList[position])
 
             rowMain.button_increment_quantity.setOnClickListener{
-                addDose(_itemDataList[position], position)
+                addDose(_itemDataList[position])
             }
 
             rowMain.button_decrement_quantity.setOnClickListener{
-                minusDose(_itemDataList[position], position)
+                minusDose(_itemDataList[position])
             }
 
             rowMain.button_increment_hours.setOnClickListener{
-                addHour(_itemDataList[position], position)
+                addHour(_itemDataList[position])
             }
 
             rowMain.button_decrement_hours.setOnClickListener{
-                minusHour(_itemDataList[position], position)
+                minusHour(_itemDataList[position])
             }
 
             rowMain.button_increment_minutes.setOnClickListener{
-                addMinutes(_itemDataList[position], position)
+                addMinutes(_itemDataList[position])
             }
 
             rowMain.button_decrement_minutes.setOnClickListener{
-                minusMinutes(_itemDataList[position], position)
+                minusMinutes(_itemDataList[position])
             }
 
 
@@ -240,7 +282,8 @@ class MedicationAddFragment : Fragment(){
         }catch (e: IOException){
             e.printStackTrace()
         }
-     //   mImagePath = file.absolutePath
+        mImagePath = file.absolutePath
+        medicationViewModel.getMedicationImage(mImagePath)
         return file.absolutePath
     }
 
