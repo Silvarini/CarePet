@@ -1,15 +1,16 @@
 package com.example.carepet.medication
 
 import android.Manifest
-import android.app.Activity
-import android.app.AlertDialog
+import android.app.*
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
@@ -17,6 +18,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -24,6 +27,7 @@ import com.example.carepet.R
 import com.example.carepet.common.Constants
 import com.example.carepet.common.Constants.CAMERA
 import com.example.carepet.databinding.FragmentMedicationAddBinding
+import com.example.carepet.dialog.AlarmReceiver
 import com.example.carepet.enum.DurationTypes
 import com.example.carepet.model.Doses
 import com.example.carepet.model.Medication
@@ -67,7 +71,6 @@ class MedicationAddFragment : Fragment(){
 
 
 
-
     data class ItemData(
             val quantityTitle: String,
             val scheduleTitle: String,
@@ -85,6 +88,7 @@ class MedicationAddFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMedicationAddBinding.inflate(inflater, container, false)
+        createNotificationChannel()
 
 
         binding.imageViewPhotoAdd.setOnClickListener {
@@ -101,45 +105,7 @@ class MedicationAddFragment : Fragment(){
             return itemDataList
         }
 
-    /*    fun saveDose() {
-            val count = binding.listViewDoses.lastVisiblePosition.absoluteValue
-        Log.i("BAATMAN PARENT COUNT", "${count}")
-        Log.i("BAATMAN PARENT", "${binding.listViewDoses.getChildAt(1)}")
-        Log.i("BAATMAN PARENT", "${binding.listViewDoses.medication_add_doses_fragment.textView_quantity_value.text.toString().toInt()}")
-        }
 
- /*
-
-            var latestMedicationID = 1
-           /*
-            medicationViewModel.getMedicationId.observe(viewLifecycleOwner) {
-            }
-*/
-//            latestMedicationID = it
-
-            itemDataList.clear()
-            val count = binding.listViewDoses.medication_add_doses_fragment.childCount
-            var v: View?
-
-            for (i in 0 until count){
-                v = binding.listViewDoses.medication_add_doses_fragment.getChildAt(i)
-                doseQuantity = v.textView_quantity_value.text.toString().toInt()
-                scheduleDoseHour = v.textView_schedule_hours_value.toString().toInt()
-                scheduleDoseMinutes = v.textView_schedule_minutes_value.toString().toInt()
-
-                val doses = Doses(
-                        0,
-                        doseQuantity,
-                        scheduleDoseHour,
-                        scheduleDoseMinutes,
-                        latestMedicationID
-                )
-                itemDataList.add(doses)
-            }
-            Log.i("BAAATMA","$itemDataList")
-
-        }
-*/*/
 
         medicationViewModel.getMedicationId.observe(viewLifecycleOwner){
             if(it != null) {
@@ -170,6 +136,27 @@ class MedicationAddFragment : Fragment(){
 
         return binding.root
     }
+
+
+
+    private fun createNotificationChannel(){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+
+            val name: CharSequence = "CarePetReminderChannel"
+            val description = "Channel for Alarm Manager"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel("CarePet", name, importance)
+            channel.description = description
+            val notificationManager = activity?.getSystemService(
+                NotificationManager::class.java
+            )
+
+            notificationManager?.createNotificationChannel(channel)
+        }
+    }
+
+
     class MyCustomAdapter(context: Context, itemDataList: ArrayList<ItemData>): BaseAdapter() {
 
         private val mContext: Context

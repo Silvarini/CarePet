@@ -27,6 +27,9 @@
         <action
             android:id="@+id/action_destination_main_to_medicationDialogFragment"
             app:destination="@id/medicationDialogFragment" />
+        <action
+            android:id="@+id/action_destination_main_to_taskDialgoFragment"
+            app:destination="@id/taskDialgoFragment" />
     </fragment>
     <dialog
         android:id="@+id/dialogPetFragment"
@@ -86,6 +89,19 @@
         android:id="@+id/medicationDialogFragment"
         android:name="com.example.carepet.dialog.MedicationDialogFragment"
         android:label="fragment_medication_dialog"
-        tools:layout="@layout/fragment_medication_dialog" />
+        tools:layout="@layout/fragment_medication_dialog" >
+        <action
+            android:id="@+id/action_medicationDialogFragment_to_destination_main"
+            app:destination="@id/destination_main" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskDialgoFragment"
+        android:name="com.example.carepet.dialog.TaskDialogFragment"
+        android:label="fragment_task_dialgo"
+        tools:layout="@layout/fragment_task_dialgo" >
+        <action
+            android:id="@+id/action_taskDialgoFragment_to_destination_main"
+            app:destination="@id/destination_main" />
+    </fragment>
 
 </navigation>

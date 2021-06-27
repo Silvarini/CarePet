@@ -1,10 +1,16 @@
 package com.example.carepet
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,12 +18,14 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.carepet.common.Constants.IMAGE_DIRECTORY
 import com.example.carepet.databinding.FragmentMainBinding
+import com.example.carepet.dialog.AlarmReceiver
 import com.example.carepet.enum.DurationTypes
 import com.example.carepet.medication.MedicationViewModel
 import com.example.carepet.medication.MedicationViewModelFactory
@@ -40,6 +48,9 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
 
 
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var pendingIntent: PendingIntent
+
     private val userViewModel: UserViewModel by viewModels {
         UserViewModelFactory((requireActivity().application as UserApplication).repository)
     }
@@ -56,6 +67,7 @@ class MainFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentMainBinding.inflate(inflater, container, false)
+        createNotificationChannel()
 
         binding.buttonMedication.setOnClickListener{
             it.findNavController().navigate(MainFragmentDirections.actionDestinationMainToMedicationListFragment())
@@ -68,17 +80,48 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
+    private fun createNotificationChannel() {
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+           val name: CharSequence = "CarePetReminderChannel"
+           val description = "Channel for  Alarm Manager"
+           val importance: Int = NotificationManager.IMPORTANCE_HIGH
+           val channel = NotificationChannel("CarePet", name, importance)
+           channel.description = description
+
+           val notificationManager = activity?.getSystemService(
+                   NotificationManager::class.java
+           )
+
+           notificationManager?.createNotificationChannel(channel)
+        }
+
+    }
+
+
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
 
+    fun setAlarm(){
+
+        alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(activity, AlarmReceiver::class.java)
+
+        pendingIntent = PendingIntent.getBroadcast(activity, 0, intent, 0)
+
+        alarmManager.setExact(AlarmManager.ELAPSED_REALTIME, 20000, pendingIntent)
+
+        Log.i("ALAAARM", "ALARRRM")
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onStart() {
         super.onStart()
 
-
+        setAlarm()
         val videoViewPet = binding.videoViewPet
 
         var count = 0
@@ -133,6 +176,10 @@ class MainFragment : Fragment() {
             ++count
             if(count%5 == 0){
                 playAskPet()
+            }
+            if(count == 9){
+                //findNavController().navigate(MainFragmentDirections.actionDestinationMainToMedicationDialogFragment())
+                //findNavController().navigate(MainFragmentDirections.actionDestinationMainToTaskDialogFragment())
             }
             Log.d("COUNT", count.toString())
         }
